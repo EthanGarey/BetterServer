@@ -19,7 +19,7 @@ public final class Main extends JavaPlugin {
             if (this.getDescription().getVersion().equals(version)) {
                 getLogger().info("There is not a new update available.");
             } else {
-                getLogger().info("There is a new update available.");
+                getLogger().info("There is a new update available. https://www.spigotmc.org/resources/betterserver.105989/updates");
             }
         });
         this.msg = new Msg(this);
