@@ -6,105 +6,103 @@ authors: [ EthanGarey ]
 commands:
   fly:
     description: Toggles flight for player.
-    permission: permissions.commands.flight.toggle
+    permission: betterserver.permissions.commands.flight.toggle
   walkspeed:
     description: Changes the walk speed of the player
-    permission: permissions.commands.walk.speed
+    permission: betterserver.permissions.commands.walk.speed
   flyspeed:
     description: Changes the flight speed of the player
-    permission: permissions.commands.flight.speed
+    permission: betterserver.permissions.commands.flight.speed
   msg:
     description: Message another player.
     aliases: [ "message", "w", "tell" ]
-    permission: permissions.commands.message
+    permission: betterserver.permissions.commands.message
   reply:
     description: Reply to a players message.
     aliases: [ "r", "reply" ]
-    permission: permissions.commands.message.reply
+    permission: betterserver.permissions.commands.message.reply
   teleport:
     aliases: [ "tp" ]
     description: Allows you to use teleports.
-    permission: permissions.commands.teleport
+    permission: betterserver.permissions.commands.teleport
   tpall:
     aliases: [ "bringall" ]
     description: Teleports all online players to you.
-    permission: permissions.commands.teleport.others.all
+    permission: betterserver.permissions.commands.teleport.others.all
   socialspy:
     description: Allows you to watch others conversations secretly!
-    permission: permissions.socialspy
+    permission: betterserver.permissions.socialspy
   #Gamemode#
   gamemode:
     aliases: [ "gm" ]
     description: Change a specified or your gamemode
-    permission: permissions.gamemode
+    permission: betterserver.permissions.gamemode
   gmc:
     description: Change a specified or your gamemode
-    permission: permissions.gamemode
+    permission: betterserver.permissions.gamemode
   gms:
     description: Change a specified or your gamemode
-    permission: permissions.gamemode
+    permission: betterserver.permissions.gamemode
   gma:
     description: Change a specified or your gamemode
-    permission: permissions.gamemode
+    permission: betterserver.permissions.gamemode
   gmsp:
-    aliases: [ "spectate" ]
     description: Change a specified or your gamemode
-    permission: permissions.gamemode
+    permission: betterserver.permissions.gamemode
   #Gamemode#
-  bettercommands:
+  betterserver:
     description: Plugin help menu
-    permission: permissions.bettercommands.menu
+    permission: betterserver.permissions.bettercommands.menu
   god:
     description: Toggles invincibility for the player.
-    permission: permissions.god
+    permission: betterserver.permissions.god
   clearchat:
-    description: Clears the chat
     aliases: [ "cc" ]
-    permission: permissions.clearchat
+    description: Clears the chat
+    permission: betterserver.permissions.clearchat
   clear:
-    permission: permissions.clear
+    permission: betterserver.permissions.clear
     description: Clears your inventory
     aliases: [ "ci", "clearinventory" ]
   invsee:
-    description: View a players inventory
     aliases: [ "viewinventory" ]
-    permission: permissions.invsee
+    description: View a players inventory
+    permission: betterserver.permissions.invsee
   back:
     description: Go to your last death place.
-    permission: permissions.back
+    permission: betterserver.permissions.back
   give:
     description: Gives you a item of your choice
-    permission: permissions.give
+    permission: betterserver.permissions.give
     aliases: [ "i" ]
   #tools#
   workbench:
-
-    description: Opens a workbench
     aliases: [ "craft", "craftingtable" ]
-    permission: permissions.tools.workbench
+    description: Opens a workbench
+    permission: betterserver.permissions.tools.workbench
   furnace:
     description: Opens a furnace
-    permission: permissions.tools.furnace
+    permission: betterserver.permissions.tools.furnace
   anvil:
-    description: Opens a anvil
     aliases: [ "av" ]
-    permission: permissions.tools.anvil
+    description: Opens a anvil
+    permission: betterserver.permissions.tools.anvil
   cartographytable:
     description: Opens a cartography table
-    permission: permissions.tools.cartographytable
+    permission: betterserver.permissions.tools.cartographytable
   grindstone:
     description: Opens a grindstone
-    permission: permissions.tools.grindstone
+    permission: betterserver.permissions.tools.grindstone
   loom:
     description: Opens a loom
-    permission: permissions.tools.loom
+    permission: betterserver.permissions.tools.loom
   smithingtable:
     description: Opens a smithingtable
-    permission: permissions.tools.smithingtable
+    permission: betterserver.permissions.tools.smithingtable
   stonecutter:
     description: Opens a stonecutter
-    permission: permissions.tools.stonecutter
+    permission: betterserver.permissions.tools.stonecutter
     #Tools#
   mutechat:
     description: Mutes the chat
-    permission: permissions.chat.mutechat
+    permission: betterserver.permissions.chat.mutechat
