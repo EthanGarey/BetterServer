@@ -1,0 +1,58 @@
+package BetterServer.Commands.AdminEssentials;
+
+import BetterServer.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Objects;
+
+public class God implements CommandExecutor {
+    Main plugin;
+
+    public God(Main plugin) {
+        this.plugin = plugin;
+        Objects.requireNonNull(this.plugin.getCommand("god")).setExecutor(this);
+    }
+
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length == 0) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§4§lYou must be a player to execute this command.");
+                return true;
+            } else {
+                if (player.isInvulnerable()) {
+                    player.setInvulnerable(false);
+                    sender.sendMessage("§d§lYou are no longer invincible.");
+                } else {
+                    player.setInvulnerable(true);
+                    player.setFoodLevel(20);
+                    player.setHealth(20);
+                    sender.sendMessage("§d§lYou have made yourself invincible.");
+                }
+            }
+
+        } else {
+            Player target = Bukkit.getServer().getPlayer(args[0]);
+            if (target == null) {
+                sender.sendMessage("§4§lCan't find player by the name of " + args[1]);
+                return true;
+            }
+            if ((target).isInvulnerable()) {
+                target.setInvulnerable(false);
+                sender.sendMessage("§d§l{NICK} is no longer invincible.".replace("{NICK}", target.getName()));
+                target.sendMessage("§d§lYou are no longer invincible.");
+            } else {
+                target.setInvulnerable(true);
+                target.setFoodLevel(20);
+                target.setHealth(20);
+                sender.sendMessage("§d§l{NICK} is now invincible.".replace("{NICK}", target.getName()));
+                target.sendMessage("§d§lYou are now invincible.");
+            }
+
+        }
+        return true;
+    }
+}

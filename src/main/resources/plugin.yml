@@ -1,0 +1,110 @@
+name: BetterServer
+version: '${project.version}'
+main: BetterServer.Main
+api-version: 1.19
+authors: [ EthanGarey ]
+commands:
+  fly:
+    description: Toggles flight for player.
+    permission: permissions.commands.flight.toggle
+  walkspeed:
+    description: Changes the walk speed of the player
+    permission: permissions.commands.walk.speed
+  flyspeed:
+    description: Changes the flight speed of the player
+    permission: permissions.commands.flight.speed
+  msg:
+    description: Message another player.
+    aliases: [ "message", "w", "tell" ]
+    permission: permissions.commands.message
+  reply:
+    description: Reply to a players message.
+    aliases: [ "r", "reply" ]
+    permission: permissions.commands.message.reply
+  teleport:
+    aliases: [ "tp" ]
+    description: Allows you to use teleports.
+    permission: permissions.commands.teleport
+  tpall:
+    aliases: [ "bringall" ]
+    description: Teleports all online players to you.
+    permission: permissions.commands.teleport.others.all
+  socialspy:
+    description: Allows you to watch others conversations secretly!
+    permission: permissions.socialspy
+  #Gamemode#
+  gamemode:
+    aliases: [ "gm" ]
+    description: Change a specified or your gamemode
+    permission: permissions.gamemode
+  gmc:
+    description: Change a specified or your gamemode
+    permission: permissions.gamemode
+  gms:
+    description: Change a specified or your gamemode
+    permission: permissions.gamemode
+  gma:
+    description: Change a specified or your gamemode
+    permission: permissions.gamemode
+  gmsp:
+    aliases: [ "spectate" ]
+    description: Change a specified or your gamemode
+    permission: permissions.gamemode
+  #Gamemode#
+  bettercommands:
+    description: Plugin help menu
+    permission: permissions.bettercommands.menu
+  god:
+    description: Toggles invincibility for the player.
+    permission: permissions.god
+  clearchat:
+    description: Clears the chat
+    aliases: [ "cc" ]
+    permission: permissions.clearchat
+  clear:
+    permission: permissions.clear
+    description: Clears your inventory
+    aliases: [ "ci", "clearinventory" ]
+  invsee:
+    description: View a players inventory
+    aliases: [ "viewinventory" ]
+    permission: permissions.invsee
+  back:
+    description: Go to your last death place.
+    permission: permissions.back
+  give:
+    description: Gives you a item of your choice
+    permission: permissions.give
+    aliases: [ "i" ]
+  #tools#
+  workbench:
+
+    description: Opens a workbench
+    aliases: [ "craft", "craftingtable" ]
+    permission: permissions.tools.workbench
+  furnace:
+    description: Opens a furnace
+    permission: permissions.tools.furnace
+  anvil:
+    description: Opens a anvil
+    aliases: [ "av" ]
+    permission: permissions.tools.anvil
+  cartographytable:
+    description: Opens a cartography table
+    permission: permissions.tools.cartographytable
+  grindstone:
+    description: Opens a grindstone
+    permission: permissions.tools.grindstone
+  loom:
+    description: Opens a loom
+    permission: permissions.tools.loom
+  smithingtable:
+    description: Opens a smithingtable
+    permission: permissions.tools.smithingtable
+  stonecutter:
+    description: Opens a stonecutter
+    permission: permissions.tools.stonecutter
+    #Tools#
+  mutechat:
+    description: Mutes the chat
+    permission: permissions.chat.mutechat
