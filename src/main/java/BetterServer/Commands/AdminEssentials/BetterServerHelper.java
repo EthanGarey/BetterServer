@@ -20,10 +20,11 @@ public class BetterServerHelper implements CommandExecutor {
             case 0 -> sender.sendMessage("§4§lUsage: /BetterCommands [<Help>,Reload]");
             case 1 -> {
                 String usage = args[0];
-                if ("help".equals(usage)) {
-                    sender.sendMessage("§e§lHello World!");
-                } else {
-                    sender.sendMessage("§4§lUsage: /BetterServer [<Help>]");
+                switch (usage) {
+                    case "help" -> sender.sendMessage("§e§lHello World!");
+                    case "update" -> {
+                    }
+                    default -> sender.sendMessage("§4§lUsage: /BetterServer [<Help>]");
                 }
             }
         }

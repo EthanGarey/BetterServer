@@ -15,6 +15,13 @@ public final class Main extends JavaPlugin {
 
     public void onEnable() {
         // Plugin startup logic
+        new UpdateChecker(this, 105989).getVersion(version -> {
+            if (this.getDescription().getVersion().equals(version)) {
+                getLogger().info("There is not a new update available.");
+            } else {
+                getLogger().info("There is a new update available.");
+            }
+        });
         this.msg = new Msg(this);
         this.socialSpy = new SocialSpy(this);
         new Mutechat(this);
