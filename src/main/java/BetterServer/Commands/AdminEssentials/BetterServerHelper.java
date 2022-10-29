@@ -23,7 +23,7 @@ public class BetterServerHelper implements CommandExecutor {
                 if ("help".equals(usage)) {
                     sender.sendMessage("§e§lHello World!");
                 } else {
-                    sender.sendMessage("§4§lUsage: /BetterCommands [<Help>]");
+                    sender.sendMessage("§4§lUsage: /BetterServer [<Help>]");
                 }
             }
         }
