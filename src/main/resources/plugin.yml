@@ -32,7 +32,7 @@ commands:
   socialspy:
     description: Allows you to watch others conversations secretly!
     permission: betterserver.permissions.socialspy
-  #Gamemode#
+  #Gamemode# #
   gamemode:
     aliases: [ "gm" ]
     description: Change a specified or your gamemode
