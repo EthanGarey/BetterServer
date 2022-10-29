@@ -4,11 +4,10 @@ import BetterServer.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
-public class BetterServerHelper extends JavaPlugin implements CommandExecutor {
+public class BetterServerHelper implements CommandExecutor {
     Main plugin;
 
     public BetterServerHelper(Main plugin) {
@@ -22,15 +21,9 @@ public class BetterServerHelper extends JavaPlugin implements CommandExecutor {
             case 1 -> {
                 String usage = args[0];
                 switch (usage) {
-                    case "help" -> sender.sendMessage("§e§lHello World!");
-                    case "update" -> new UpdateChecker(this, 105989).getVersion(version -> {
-                        if (this.getDescription().getVersion().equals(version)) {
-                            getLogger().info("There is not a new update available.");
-                        } else {
-                            getLogger().info("There is a new update available. https://www.spigotmc.org/resources/betterserver.105989/updates");
-                        }
-                    });
-                    default -> sender.sendMessage("§4§lUsage: /BetterServer [<Help>]");
+                    case "help" -> sender.sendMessage("§e§lWill add at a later date.!");
+                    case "update" -> plugin.onEnable();
+                    default -> sender.sendMessage("§4§lUsage: /BetterServer [<Help>, <Update>]");
                 }
             }
         }

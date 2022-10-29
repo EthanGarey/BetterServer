@@ -7,7 +7,8 @@ import BetterServer.Events.PlayerEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Main extends JavaPlugin {
+public class Main extends JavaPlugin {
+
 
     public Msg msg;
 
@@ -15,13 +16,15 @@ public final class Main extends JavaPlugin {
 
     public void onEnable() {
         // Plugin startup logic
-        new UpdateChecker(this, 105989).getVersion(version -> {
+
+        new UpdateChecker (this, 105989).getVersion(version -> {
             if (this.getDescription().getVersion().equals(version)) {
                 getLogger().info("There is not a new update available.");
             } else {
                 getLogger().info("There is a new update available. https://www.spigotmc.org/resources/betterserver.105989/updates");
             }
         });
+
         this.msg = new Msg(this);
         this.socialSpy = new SocialSpy(this);
         new Mutechat(this);
