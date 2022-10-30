@@ -13,10 +13,9 @@ public class Main extends JavaPlugin {
     public Msg msg;
 
     public SocialSpy socialSpy;
-
+    @Override
     public void onEnable() {
         // Plugin startup logic
-
         new UpdateChecker (this, 105989).getVersion(version -> {
             if (this.getDescription().getVersion().equals(version)) {
                 getLogger().info("There is not a new update available.");
