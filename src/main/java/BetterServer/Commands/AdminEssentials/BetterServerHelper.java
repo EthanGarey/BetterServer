@@ -17,12 +17,15 @@ public class BetterServerHelper implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         switch (args.length) {
-            case 0 -> sender.sendMessage("§4§lUsage: /BetterCommands [<Help>,Reload]");
+            case 0 -> sender.sendMessage("§4§lUsage: /BetterServer [<Help>,<Update>]");
             case 1 -> {
                 String usage = args[0];
                 switch (usage) {
                     case "help" -> sender.sendMessage("§e§lWill add at a later date.!");
-                    case "update" -> plugin.onEnable();
+                    case "update" -> {
+                        sender.sendMessage("Check console!");
+                        plugin.onEnable();
+                    }
                     default -> sender.sendMessage("§4§lUsage: /BetterServer [<Help>, <Update>]");
                 }
             }
