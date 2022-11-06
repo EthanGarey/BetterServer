@@ -16,23 +16,30 @@ public class PlayerEvents implements Listener {
     public PlayerEvents(Main plugin) {
         this.plugin = plugin;
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
-
     }
 
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
-        Player player = event.getPlayer();
-        if (player.hasPermission("betterserver.permissions.chat.chatcolor")) {
-            event.setMessage(event.getMessage().replace('&', '§'));
+        //Check if event is enabled:
+        if(!(this.plugin.getConfig().getBoolean("ColorChatSupport"))) {
+
+        }
+        //Done :D
+        else {
+            Player player = event.getPlayer();
+            if(player.hasPermission("betterserver.permissions.chat.chatcolor")) {
+                event.setMessage(event.getMessage().replace('&', '§'));
+            }
         }
     }
+
     @EventHandler
 
     public void onPlayerLoseHungerEvent(FoodLevelChangeEvent event) {
 
-        if (!(event.getEntity() instanceof Player player)) return;
-        if (event.getFoodLevel() > player.getFoodLevel()) return;
-        if (!player.isInvulnerable()) return;
+        if(!(event.getEntity() instanceof Player player)) return;
+        if(event.getFoodLevel() > player.getFoodLevel()) return;
+        if(!player.isInvulnerable()) return;
         event.setCancelled(true);
     }
 
@@ -53,7 +60,7 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("permissions.back")) {
+        if(player.hasPermission("permissions.back")) {
             player.sendMessage("§e§lYou just died! Type /back to go to your last death location!");
         }
     }

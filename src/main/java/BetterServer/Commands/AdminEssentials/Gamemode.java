@@ -28,10 +28,16 @@ public class Gamemode implements CommandExecutor, TabCompleter {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if ((label.equals("gmc")) || (label.equals("gma")) || (label.equals("gmsp")) || (label.equals("gms"))) {
+        //Check if command is enabled:
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gamemode")) {
+            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+            return true;
+        }
+        //Done :D
+        if((label.equals("gmc")) || (label.equals("gma")) || (label.equals("gmsp")) || (label.equals("gms"))) {
             Player target;
-            if (args.length == 0) {
-                if (sender instanceof Player player) {
+            if(args.length == 0) {
+                if(sender instanceof Player player) {
                     target = player;
                 } else {
                     sender.sendMessage("§4§lPlease enter a user to set the gamemode to.");
@@ -42,7 +48,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
             }
             String gamemode = "";
 
-            if (target == null) {
+            if(target == null) {
                 sender.sendMessage("§4§lCan't find player by the name of " + args[0]);
                 return true;
             }
@@ -65,21 +71,21 @@ public class Gamemode implements CommandExecutor, TabCompleter {
                     gamemode = "ADVENTURE";
                 }
             }
-            if (!(target == sender)) {
+            if(!(target == sender)) {
                 sender.sendMessage("§e§lYou set " + target.getName() + "§e§l's gamemode to §a§l" + gamemode);
             }
             target.sendMessage("§e§lYour gamemode has been set to §a§l" + gamemode);
             return true;
         }
-        if (args.length == 0) {
+        if(args.length == 0) {
             sender.sendMessage("§4§lUsage: /gamemode <creative,survival,spectator,adventure> [player]");
             return true;
         }
         String usage = args[0];
         Player target;
 
-        if (args.length == 1) {
-            if (sender instanceof Player player) {
+        if(args.length == 1) {
+            if(sender instanceof Player player) {
                 target = player;
             } else {
                 sender.sendMessage("§4§lA player must execute this command!");
@@ -87,7 +93,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
             }
         } else {
             target = Bukkit.getPlayer(args[1]);
-            if (target == null) {
+            if(target == null) {
                 sender.sendMessage("§4§lCan't find player by the name of " + args[1]);
                 return true;
             }
@@ -121,8 +127,8 @@ public class Gamemode implements CommandExecutor, TabCompleter {
                     }
                 }
         }
-        if (!(args.length == 1)) {
-            if (!(target == sender)) {
+        if(!(args.length == 1)) {
+            if(!(target == sender)) {
                 sender.sendMessage("§e§lYou set " + target.getName() + "§e§l's gamemode to §a§l" + gamemode);
             }
         }
@@ -133,7 +139,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (args.length == 1) {
+        if(args.length == 1) {
             switch (label) {
                 case "gm", "gamemode" -> {
                     List<String> getgamemode = newArrayList();
@@ -148,7 +154,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
             }
 
         }
-        if (args.length >= 3) {
+        if(args.length >= 3) {
             return Collections.emptyList();
         }
         return null;

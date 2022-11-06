@@ -18,11 +18,17 @@ public class Fly implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof final Player player) {
+        //Check if command is enabled:
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("fly")) {
+            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+            return true;
+        }
+        //Done :D
+        if(sender instanceof final Player player) {
 
             switch (args.length) {
                 case 0:
-                    if (!player.getAllowFlight()) {
+                    if(!player.getAllowFlight()) {
                         player.setAllowFlight(true);
                         player.sendMessage("§e§lFlight is now §a§lEnabled.");
                     } else {
@@ -31,10 +37,10 @@ public class Fly implements CommandExecutor {
                     }
                     break;
                 case 1:
-                    if (player.hasPermission("permissions.commands.flight.toggleothers")) {
+                    if(player.hasPermission("permissions.commands.flight.toggleothers")) {
                         final Player other = Bukkit.getPlayer(args[0]);
-                        if (other != null) {
-                            if (!other.getAllowFlight()) {
+                        if(other != null) {
+                            if(!other.getAllowFlight()) {
                                 other.setAllowFlight(true);
                                 player.sendMessage("§e§lFlight is now §a§lEnabled §e§lFor §3§l{NICK}§e§l.".replace("{NICK}", other.getName()));
                             } else {

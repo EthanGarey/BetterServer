@@ -19,25 +19,34 @@ public class Speed implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        //Check if command is enabled:
+
+        //Done :D
+        if(!(sender instanceof Player player)) {
             sender.sendMessage("&4&lOnly players can execute this command!".replace('&', '§'));
             return true;
         } else {
             switch (label) {
                 case "flyspeed" -> {
-                    if (args.length == 0) {
+                    //Check if command is enabled:
+                    if(this.plugin.getConfig().getStringList("DisabledCommands").contains("flyspeed")) {
+                        sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+                        return true;
+                    }
+                    //Done :D
+                    if(args.length == 0) {
                         sender.sendMessage("§4§lPlease set a number 1-20 to make your flyspeed.");
                         return true;
                     }
-                    if (args.length == 1) {
-                        if ((args[0]).equals("reset")) {
+                    if(args.length == 1) {
+                        if((args[0]).equals("reset")) {
                             sender.sendMessage("§e§lYou reset your flyspeed.");
                             player.setFlySpeed((float) .1);
                             return true;
                         }
                         try {
                             int test = Integer.parseInt(args[0]);
-                            if (test < 1 || test > 10) {
+                            if(test < 1 || test > 10) {
                                 sender.sendMessage("&4&l1-10 is the allowed speed".replace('&', '§'));
                                 return true;
                             }
@@ -51,20 +60,26 @@ public class Speed implements CommandExecutor {
                     }
                 }
                 case "walkspeed" -> {
-                    if (args.length == 0) {
+                    //Check if command is enabled:
+                    if(this.plugin.getConfig().getStringList("DisabledCommands").contains("walkspeed")) {
+                        sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+                        return true;
+                    }
+                    //Done :D
+                    if(args.length == 0) {
                         sender.sendMessage("§4§lPlease set a number 1-10 to make your walkspeed.");
                         return true;
                     }
 
-                    if (args.length == 1) {
-                        if ((args[0]).equals("reset")) {
+                    if(args.length == 1) {
+                        if((args[0]).equals("reset")) {
                             sender.sendMessage("§e§lYou reset your walkspeed.");
                             player.setWalkSpeed((float) .2);
                             return true;
                         }
                         try {
                             int test = Integer.parseInt(args[0]);
-                            if (test < 1 || test > 10) {
+                            if(test < 1 || test > 10) {
                                 sender.sendMessage("&4&l1-10 is the allowed speed".replace('&', '§'));
                                 return true;
                             }

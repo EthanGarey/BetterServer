@@ -18,8 +18,14 @@ public class ClearInventory implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length == 0) {
-            if (sender instanceof Player player) {
+        //Check if command is enabled:
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("clear")) {
+            sender.sendMessage("§4§l command is currently disabled, if you wish to override this command you are free to do.");
+            return true;
+        }
+        //Done :D
+        if(args.length == 0) {
+            if(sender instanceof Player player) {
                 player.getInventory().clear();
                 player.sendMessage("§e§lYour inventory has been cleared!");
             } else {
@@ -27,7 +33,7 @@ public class ClearInventory implements CommandExecutor {
             }
         } else {
             Player target = Bukkit.getPlayer(args[0]);
-            if (target == null) {
+            if(target == null) {
                 sender.sendMessage("§4§lCloud not find player §3§l{NICK}§4§l!".replace("{NICK}", (args[0])));
                 return true;
             }

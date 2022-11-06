@@ -18,12 +18,18 @@ public class God implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length == 0) {
-            if (!(sender instanceof Player player)) {
+        //Check if command is enabled:
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("god")) {
+            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+            return true;
+        }
+        //Done :D
+        if(args.length == 0) {
+            if(!(sender instanceof Player player)) {
                 sender.sendMessage("§4§lYou must be a player to execute this command.");
                 return true;
             } else {
-                if (player.isInvulnerable()) {
+                if(player.isInvulnerable()) {
                     player.setInvulnerable(false);
                     sender.sendMessage("§d§lYou are no longer invincible.");
                 } else {
@@ -36,11 +42,11 @@ public class God implements CommandExecutor {
 
         } else {
             Player target = Bukkit.getServer().getPlayer(args[0]);
-            if (target == null) {
+            if(target == null) {
                 sender.sendMessage("§4§lCan't find player by the name of " + args[1]);
                 return true;
             }
-            if ((target).isInvulnerable()) {
+            if((target).isInvulnerable()) {
                 target.setInvulnerable(false);
                 sender.sendMessage("§d§l{NICK} is no longer invincible.".replace("{NICK}", target.getName()));
                 target.sendMessage("§d§lYou are no longer invincible.");

@@ -26,7 +26,13 @@ public class Tools implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player player) {
+        //Check if command is enabled:
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("workbench")) {
+            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+            return true;
+        }
+        //Done :D
+        if(sender instanceof Player player) {
 
             switch (label) {
                 case "workbench", "craft", "craftingtable" -> player.openWorkbench(null, true);

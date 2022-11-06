@@ -7,22 +7,36 @@ import BetterServer.Events.PlayerEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public class Main extends JavaPlugin {
 
 
     public Msg msg;
-
     public SocialSpy socialSpy;
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
-        new UpdateChecker (this, 105989).getVersion(version -> {
-            if (this.getDescription().getVersion().equals(version)) {
+
+
+    public void Update() {
+        new UpdateChecker(this, 105989).getVersion(version -> {
+            if(this.getDescription().getVersion().equals(version)) {
                 getLogger().info("There is not a new update available.");
             } else {
                 getLogger().info("There is a new update available. https://www.spigotmc.org/resources/betterserver.105989/updates");
             }
         });
+
+    }
+
+    @Override
+    public void onEnable() {
+        // Plugin startup logic
+        File config = new File(getDataFolder(), "config.yml");
+        if(!(config.exists())) {
+            Bukkit.getConsoleSender().sendMessage("Config file not found, Creating one for you!");
+
+        }
+        saveDefaultConfig();
+        Update();
 
         this.msg = new Msg(this);
         this.socialSpy = new SocialSpy(this);
@@ -43,7 +57,7 @@ public class Main extends JavaPlugin {
         new Speed(this);
         Bukkit.getConsoleSender().sendMessage("&d[BetterServer] is running".replace('&', '§'));
         Bukkit.getConsoleSender().sendMessage("&d[BetterServer] made by &b&lEthan Garey".replace('&', '§'));
-        Bukkit.getConsoleSender().sendMessage("§d[BetterServer] version: 1.0.0.0");
+        saveDefaultConfig();
 
     }
 

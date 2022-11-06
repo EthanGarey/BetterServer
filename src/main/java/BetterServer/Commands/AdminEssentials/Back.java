@@ -18,9 +18,15 @@ public class Back implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player player) {
+        //Check if command is enabled:
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("back")) {
+            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+            return true;
+        }
+        //Done :D
+        if(sender instanceof Player player) {
             Location loc = player.getLastDeathLocation();
-            if (loc == null) {
+            if(loc == null) {
                 sender.sendMessage("§4§lCannot find your last death location.");
             } else {
                 player.teleport(loc);

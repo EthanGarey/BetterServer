@@ -12,6 +12,7 @@ import java.util.Objects;
 
 
 public class Msg implements CommandExecutor {
+
     public HashMap<Player, Player> lastMessageSender = new HashMap<>();
     Main plugin;
 
@@ -21,19 +22,25 @@ public class Msg implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player player) {
-            if (args.length > 0) {
+        //Check if command is enabled:
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("message")) {
+            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+            return true;
+        }
+        //Done :D
+        if(sender instanceof Player player) {
+            if(args.length > 0) {
                 Player other = Bukkit.getPlayer(args[0]);
-                if (other != null) {
-                    if (other != player) {
-                        if (args.length > 1) {
+                if(other != null) {
+                    if(other != player) {
+                        if(args.length > 1) {
                             lastMessageSender.put(other, player);
                             lastMessageSender.put(player, other);
                             StringBuilder sb = new StringBuilder();
                             for (int i = 1; i < args.length; i++)
                                 sb.append(args[i]).append(" ");
                             String message = sb.toString();
-                            if (!this.plugin.socialSpy.SocialSpyUsers.isEmpty()) {
+                            if(!this.plugin.socialSpy.SocialSpyUsers.isEmpty()) {
                                 for (Player socialSpyUser : this.plugin.socialSpy.SocialSpyUsers) {
                                     socialSpyUser.sendMessage("§d§l[SocialSpy]{NICK} whispers to {NICKTO}:{MESSAGE}".replace("{NICK}", player.getName()).replace("{NICKTO}", other.getName()).replace("{MESSAGE}", message));
                                 }
