@@ -1,14 +1,16 @@
 package BetterServer.Events;
 
 import BetterServer.Main;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerEvents implements Listener {
     final Main plugin;
@@ -18,17 +20,23 @@ public class PlayerEvents implements Listener {
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
 
-    @EventHandler
-    public void onPlayerChat(PlayerChatEvent event) {
-        //Check if event is enabled:
-        if(!(this.plugin.getConfig().getBoolean("ColorChatSupport"))) {
+    @NotNull
+    public String colorize(@NotNull String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
+    }
 
+    @EventHandler
+
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        //Check if event is enabled:
+        if(!(this.plugin.getConfig().getBoolean("ChatcolorSupport"))) {
         }
         //Done :D
         else {
             Player player = event.getPlayer();
             if(player.hasPermission("betterserver.permissions.chat.chatcolor")) {
-                event.setMessage(event.getMessage().replace('&', '§'));
+                event.setMessage(colorize(event.getMessage()));
+
             }
         }
     }
