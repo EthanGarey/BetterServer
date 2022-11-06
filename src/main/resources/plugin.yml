@@ -1,5 +1,5 @@
 name: BetterServer
-version: 1.0.0.4
+version: 1.0.0.7
 main: BetterServer.Main
 api-version: 1.19
 authors: [ EthanGarey ]

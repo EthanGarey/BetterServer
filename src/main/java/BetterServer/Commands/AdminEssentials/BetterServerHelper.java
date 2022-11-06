@@ -54,6 +54,7 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter {
             List<String> setList = newArrayList();
             setList.add("help");
             setList.add("update");
+            setList.add("reload");
             return setList;
         } else {
             return Collections.emptyList();
