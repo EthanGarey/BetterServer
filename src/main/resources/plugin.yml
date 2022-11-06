@@ -1,9 +1,12 @@
 name: BetterServer
-version: 1.0.0.7
+version: '${project.version}'
 main: BetterServer.Main
 api-version: 1.19
 authors: [ EthanGarey ]
 commands:
+  trash:
+    description: Opens a trash bin to remove player items
+    permission: betterserver.permissions.commands.trash
   fly:
     description: Toggles flight for player.
     permission: betterserver.permissions.commands.flight.toggle

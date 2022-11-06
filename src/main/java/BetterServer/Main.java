@@ -1,13 +1,13 @@
 package BetterServer;
 
-import BetterServer.Commands.AdminEssentials.*;
-import BetterServer.Commands.Msg;
-import BetterServer.Commands.Reply;
+import BetterServer.Commands.*;
 import BetterServer.Events.PlayerEvents;
+import BetterServer.util.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Objects;
 
 public class Main extends JavaPlugin {
 
@@ -16,13 +16,14 @@ public class Main extends JavaPlugin {
     public SocialSpy socialSpy;
 
 
-    public void Update() {
+    public void updateversion() {
         new UpdateChecker(this, 105989).getVersion(version -> {
-            if(this.getDescription().getVersion().equals(version)) {
+            if(Objects.requireNonNull(getConfig().getString("version")).equals(version)) {
                 getLogger().info("There is not a new update available.");
             } else {
-                getLogger().info("There is a new update available. https://www.spigotmc.org/resources/betterserver.105989/updates");
+                getLogger().info("There is a new update available. {NICK} https://www.spigotmc.org/resources/betterserver.105989/updates (NOTE WHEN YOU INSTALL IT TO YOUR PLUGINS LIST MAKE SURE TO DELETE THE CONFIG.YML FILE!)".replace("{NICK}", version));
             }
+
         });
 
     }
@@ -36,10 +37,11 @@ public class Main extends JavaPlugin {
 
         }
         saveDefaultConfig();
-        Update();
+        updateversion();
 
         this.msg = new Msg(this);
         this.socialSpy = new SocialSpy(this);
+        new Trash(this);
         new Mutechat(this);
         new Give(this);
         new Back(this);

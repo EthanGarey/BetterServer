@@ -54,6 +54,6 @@ public class Reply implements CommandExecutor {
         } else {
             sender.sendMessage("§4§lOnly players can execute this command!");
         }
-        return false;
+        return true;
     }/*The End of file*/
 }

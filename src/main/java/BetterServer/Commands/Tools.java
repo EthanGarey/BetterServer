@@ -1,4 +1,4 @@
-package BetterServer.Commands.AdminEssentials;
+package BetterServer.Commands;
 
 import BetterServer.Main;
 import org.bukkit.command.Command;

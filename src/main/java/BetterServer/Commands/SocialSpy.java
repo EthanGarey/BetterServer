@@ -1,4 +1,4 @@
-package BetterServer.Commands.AdminEssentials;
+package BetterServer.Commands;
 
 import BetterServer.Main;
 import org.bukkit.command.Command;
@@ -27,18 +27,15 @@ public class SocialSpy implements CommandExecutor {
         }
         //Done :D
         if(sender instanceof Player player) {
-            if(player.hasPermission("permissions.socialspy")) {
-                if(!SocialSpyUsers.contains(player)) {
-                    SocialSpyUsers.add(player);
-                    player.sendMessage("&d&l[SocialSpy]&e&l is now &a&lEnabled ".replace('&', '§'));
-                } else {
-                    SocialSpyUsers.remove(player);
-                    player.sendMessage("&d&l[SocialSpy]&e&l is now &4&lDisabled ".replace('&', '§'));
-                }
-
+            if(!SocialSpyUsers.contains(player)) {
+                SocialSpyUsers.add(player);
+                player.sendMessage("&d&l[SocialSpy]&e&l is now &a&lEnabled ".replace('&', '§'));
             } else {
-                player.sendMessage("&4&lYou do not have access to that command!".replace('&', '§'));
+                SocialSpyUsers.remove(player);
+                player.sendMessage("&d&l[SocialSpy]&e&l is now &4&lDisabled ".replace('&', '§'));
             }
+
+
         } else {
             sender.sendMessage("&4&lOnly players can execute this command!".replace('&', '§'));
         }

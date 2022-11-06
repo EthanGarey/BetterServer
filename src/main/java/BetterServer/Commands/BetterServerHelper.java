@@ -1,4 +1,4 @@
-package BetterServer.Commands.AdminEssentials;
+package BetterServer.Commands;
 
 import BetterServer.Main;
 import org.bukkit.command.Command;
@@ -35,7 +35,7 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter {
                     case "help" -> sender.sendMessage("§e§lWill add at a later date.!");
                     case "update" -> {
                         sender.sendMessage("Check console!");
-                        plugin.Update();
+                        plugin.updateversion();
                     }
                     case "reload" -> {
                         this.plugin.reloadConfig();
