@@ -29,53 +29,79 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gamemode")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-            return true;
-        }
-        //Done :D
-        if((label.equals("gmc")) || (label.equals("gma")) || (label.equals("gmsp")) || (label.equals("gms"))) {
-            Player target;
-            if(args.length == 0) {
-                if(sender instanceof Player player) {
-                    target = player;
-                } else {
-                    sender.sendMessage("§4§lPlease enter a user to set the gamemode to.");
-                    return true;
-                }
-            } else {
-                target = Bukkit.getPlayer(args[0]);
-            }
-            String gamemode = "";
-
-            if(target == null) {
-                sender.sendMessage("§4§lCan't find player by the name of " + args[0]);
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gmc")) {
+            if(label.equals("gmc")) {
+                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                 return true;
             }
-
-            switch (label) {
-                case "gmc" -> {
-                    target.setGameMode(GameMode.CREATIVE);
-                    gamemode = "CREATIVE";
-                }
-                case "gms" -> {
-                    target.setGameMode(GameMode.SURVIVAL);
-                    gamemode = "SURVIVAL";
-                }
-                case "gmsp" -> {
-                    target.setGameMode(GameMode.SPECTATOR);
-                    gamemode = "SPECTATOR";
-                }
-                case "gma" -> {
-                    target.setGameMode(GameMode.ADVENTURE);
-                    gamemode = "ADVENTURE";
-                }
+        }
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gms")) {
+            if(label.equals("gms")) {
+                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+                return true;
             }
-            if(!(target == sender)) {
-                sender.sendMessage("§e§lYou set " + target.getName() + "§e§l's gamemode to §a§l" + gamemode);
+        }
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gma")) {
+            if(label.equals("gma")) {
+                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+                return true;
             }
-            target.sendMessage("§e§lYour gamemode has been set to §a§l" + gamemode);
-            return true;
+        }
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gmsp")) {
+            if(label.equals("gmsp")) {
+                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+                return true;
+            }
+        }
+        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gamemode")) {
+            if(label.equals("gamemode")) {
+                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+                return true;
+            }
+        }
+        //Done :D
+        switch (label) {
+            case "gmc", "gma", "gmsp", "gms" -> {
+                Player target;
+                if(args.length == 0) {
+                    if(sender instanceof Player player) {
+                        target = player;
+                    } else {
+                        sender.sendMessage("§4§lPlease enter a user to set the gamemode to.");
+                        return true;
+                    }
+                } else {
+                    target = Bukkit.getPlayer(args[0]);
+                }
+                String gamemode = "";
+                if(target == null) {
+                    sender.sendMessage("§4§lCan't find player by the name of " + args[0]);
+                    return true;
+                }
+                switch (label) {
+                    case "gmc" -> {
+                        target.setGameMode(GameMode.CREATIVE);
+                        gamemode = "CREATIVE";
+                    }
+                    case "gms" -> {
+                        target.setGameMode(GameMode.SURVIVAL);
+                        gamemode = "SURVIVAL";
+                    }
+                    case "gmsp" -> {
+                        target.setGameMode(GameMode.SPECTATOR);
+                        gamemode = "SPECTATOR";
+                    }
+                    case "gma" -> {
+                        target.setGameMode(GameMode.ADVENTURE);
+                        gamemode = "ADVENTURE";
+                    }
+                }
+                if(!(target == sender)) {
+                    sender.sendMessage("§e§lYou set " + target.getName() + "§e§l's gamemode to §a§l" + gamemode);
+                }
+                target.sendMessage("§e§lYour gamemode has been set to §a§l" + gamemode);
+                return true;
+            }
         }
         if(args.length == 0) {
             sender.sendMessage("§4§lUsage: /gamemode <creative,survival,spectator,adventure> [player]");
