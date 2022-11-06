@@ -46,11 +46,20 @@ public class Give implements CommandExecutor, TabCompleter {
                 sender.sendMessage("§4§lUnknown material: " + args[1] + ".");
                 return true;
             }
-            if(args.length == 2) target.getInventory().addItem(new ItemStack(itemType, 1));
-            else if(args.length == 3) {
+            Player player;
+            if(sender instanceof Player) {
+                player = (Player) sender;
+            } else {
+                player = null;
+            }
+            if(args.length == 2) {
+                target.getInventory().addItem(new ItemStack(itemType, 1));
+                sender.sendMessage("§a§lYou gave " + (target.equals(player) ? "yourself" : target.getName()) + " " + 1 + " " + itemType);
+            } else if(args.length == 3) {
                 try {
                     int number = Integer.parseInt(args[2]);
                     target.getInventory().addItem(new ItemStack(itemType, number));
+                    sender.sendMessage("§a§lYou gave " + (target.equals(player) ? "yourself" : target.getName()) + " " + number + " " + itemType + "'s.");
                 } catch (NumberFormatException ex) {
                     sender.sendMessage("§4§lYou must specify a number");
                 }
