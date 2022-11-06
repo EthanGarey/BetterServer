@@ -16,7 +16,7 @@ public class Main extends JavaPlugin {
     public SocialSpy socialSpy;
 
 
-    public void Update() {
+    public void DoThe2Things() {
         new UpdateChecker(this, 105989).getVersion(version -> {
             if(this.getDescription().getVersion().equals(version)) {
                 getLogger().info("There is not a new update available.");
@@ -24,19 +24,19 @@ public class Main extends JavaPlugin {
                 getLogger().info("There is a new update available. https://www.spigotmc.org/resources/betterserver.105989/updates");
             }
         });
-
-    }
-
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
         File config = new File(getDataFolder(), "config.yml");
         if(!(config.exists())) {
             Bukkit.getConsoleSender().sendMessage("Config file not found, Creating one for you!");
 
         }
         saveDefaultConfig();
-        Update();
+    }
+
+    @Override
+    public void onEnable() {
+        // Plugin startup logic
+
+        DoThe2Things();
 
         this.msg = new Msg(this);
         this.socialSpy = new SocialSpy(this);
