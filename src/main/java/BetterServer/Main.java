@@ -30,7 +30,7 @@ public class Main extends JavaPlugin {
             if(Objects.equals(getConfig().getString("version"), version)) {
                 getLogger().info("There is not a new update available.");
             } else {
-                getLogger().info("There is a new update available. {NICK} https://www.spigotmc.org/resources/betterserver.105989/updates (NOTE WHEN YOU INSTALL IT TO YOUR PLUGINS LIST MAKE SURE TO DELETE THE CONFIG.YML FILE!)".replace("{NICK}", version));
+                getLogger().info("There is a new update available. {NICK} https://www.spigotmc.org/resources/betterserver.105989/updates".replace("{NICK}", version));
             }
 
         });
@@ -62,7 +62,7 @@ public class Main extends JavaPlugin {
         new Speed(this);
         Bukkit.getConsoleSender().sendMessage("&d[BetterServer] is running".replace('&', '§'));
         Bukkit.getConsoleSender().sendMessage("&d[BetterServer] made by &b&lEthan Garey".replace('&', '§'));
-        
+
 
     }
 
