@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.event.Listener;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +13,8 @@ import java.util.Objects;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class BetterServerHelper implements CommandExecutor, TabCompleter {
+public class BetterServerHelper implements CommandExecutor, TabCompleter, Listener {
+
     Main plugin;
 
     public BetterServerHelper(Main plugin) {
@@ -41,12 +43,14 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter {
                         this.plugin.reloadConfig();
                         sender.sendMessage("§e§lReload complete :D!");
                     }
-                    default -> sender.sendMessage("§4§lUsage: /BetterServer [<Help>, <Update>, <Reload>]");
+                    default -> //GUI LOGIC
+                            sender.sendMessage("§4§lError: Cannot find option, " + args[0] + ".");
                 }
             }
         }
         return true;
     }
+
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {

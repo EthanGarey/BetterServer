@@ -17,8 +17,17 @@ public class Main extends JavaPlugin {
 
 
     public void updateversion() {
+        File config = new File(getDataFolder(), "config.yml");
+        if(!(config.exists())) {
+            Bukkit.getConsoleSender().sendMessage("Config file not found, Creating one for you!");
+
+        }
+        saveDefaultConfig();
+        getConfig().set("version", Objects.requireNonNull(getConfig().getDefaults()).get("version"));
+
+        saveConfig();
         new UpdateChecker(this, 105989).getVersion(version -> {
-            if(Objects.requireNonNull(getConfig().getString("version")).equals(version)) {
+            if(Objects.equals(getConfig().getString("version"), version)) {
                 getLogger().info("There is not a new update available.");
             } else {
                 getLogger().info("There is a new update available. {NICK} https://www.spigotmc.org/resources/betterserver.105989/updates (NOTE WHEN YOU INSTALL IT TO YOUR PLUGINS LIST MAKE SURE TO DELETE THE CONFIG.YML FILE!)".replace("{NICK}", version));
@@ -31,14 +40,8 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        File config = new File(getDataFolder(), "config.yml");
-        if(!(config.exists())) {
-            Bukkit.getConsoleSender().sendMessage("Config file not found, Creating one for you!");
 
-        }
-        saveDefaultConfig();
         updateversion();
-
         this.msg = new Msg(this);
         this.socialSpy = new SocialSpy(this);
         new Trash(this);
@@ -59,7 +62,7 @@ public class Main extends JavaPlugin {
         new Speed(this);
         Bukkit.getConsoleSender().sendMessage("&d[BetterServer] is running".replace('&', '§'));
         Bukkit.getConsoleSender().sendMessage("&d[BetterServer] made by &b&lEthan Garey".replace('&', '§'));
-        saveDefaultConfig();
+        
 
     }
 
