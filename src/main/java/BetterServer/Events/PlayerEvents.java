@@ -1,7 +1,6 @@
 package BetterServer.Events;
 
 import BetterServer.Main;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +9,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class PlayerEvents implements Listener {
     final Main plugin;
@@ -20,10 +18,6 @@ public class PlayerEvents implements Listener {
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
 
-    @NotNull
-    public String colorize(@NotNull String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
-    }
 
     @EventHandler
 
@@ -35,7 +29,7 @@ public class PlayerEvents implements Listener {
         else {
             Player player = event.getPlayer();
             if(player.hasPermission("betterserver.permissions.chat.chatcolor")) {
-                event.setMessage(colorize(event.getMessage()));
+                event.setMessage(event.getMessage().replace('&', '§'));
 
             }
         }
