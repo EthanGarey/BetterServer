@@ -27,15 +27,36 @@ public class Tools implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("workbench")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-            return true;
-        }
+
         //Done :D
         if(sender instanceof Player player) {
 
             switch (label) {
-                case "workbench", "craft", "craftingtable" -> player.openWorkbench(null, true);
+                case "tool" -> {
+                    switch (args[0]) {
+                        case "workbench", "craft", "craftingtable" -> {
+                            player.openWorkbench(null, true);
+                            if(this.plugin.getConfig().getStringList("DisabledCommands").contains("workbench")) {
+                                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+                                return true;
+                            }
+                        }
+                        case "anvil", "av" -> player.sendMessage("Working on this. x1");
+                        case "furnace" -> player.sendMessage("Working on this. x2");
+                        case "cartographytable" -> player.sendMessage("Working on this. x3");
+                        case "grindstone" -> player.sendMessage("Working on this. x4");
+                        case "loom" -> player.sendMessage("Working on this. x5");
+                        case "smithingtable" -> player.sendMessage("Working on this. x6");
+                        case "stonecutter" -> player.sendMessage("Working on this. x7");
+                    }
+                }
+                case "workbench", "craft", "craftingtable" -> {
+                    player.openWorkbench(null, true);
+                    if(this.plugin.getConfig().getStringList("DisabledCommands").contains("workbench")) {
+                        sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+                        return true;
+                    }
+                }
                 case "anvil", "av" -> player.sendMessage("Working on this. x1");
                 case "furnace" -> player.sendMessage("Working on this. x2");
                 case "cartographytable" -> player.sendMessage("Working on this. x3");
