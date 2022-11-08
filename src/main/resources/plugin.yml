@@ -105,6 +105,12 @@ commands:
   stonecutter:
     description: Opens a stonecutter
     permission: betterserver.permissions.tools.stonecutter
+  tool:
+    description: Allows you to open a specific tool based on the first argument
+    permission: betterserver.permissions.tools
+  tools:
+    description: Allows you to open a specific tool based on the first argument
+    permission: betterserver.permissions.tools.list
     #Tools#
   mutechat:
     description: Mutes the chat
