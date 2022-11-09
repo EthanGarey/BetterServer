@@ -35,7 +35,7 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter, Listen
                 String usage = args[0];
                 switch (usage) {
                     case "help" ->
-                            sender.sendMessage("§e§lMake sure to join the discord: https://discord.gg/eKCQUpuUXM!");
+                            sender.sendMessage("§e§lMake sure to join the discord for help!: https://discord.gg/eKCQUpuUXM!");
                     case "update" -> {
                         sender.sendMessage("Check console!");
                         plugin.updateversion();
