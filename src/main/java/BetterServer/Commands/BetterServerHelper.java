@@ -30,11 +30,12 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter, Listen
         }
         //Done :D
         switch (args.length) {
-            case 0 -> sender.sendMessage("§4§lUsage: /BetterServer [<Help>,<Update>, <Reload>]");
+            case 0 -> sender.sendMessage("§4§lUsage: /BetterServer [<help>,<update>, <reload>]");
             case 1 -> {
                 String usage = args[0];
                 switch (usage) {
-                    case "help" -> sender.sendMessage("§e§lWill add at a later date.!");
+                    case "help" ->
+                            sender.sendMessage("§e§lMake sure to join the discord: https://discord.gg/eKCQUpuUXM!");
                     case "update" -> {
                         sender.sendMessage("Check console!");
                         plugin.updateversion();
