@@ -5,11 +5,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
-public class Fly implements CommandExecutor {
+public class Fly implements CommandExecutor, TabCompleter{
     final Main plugin;
 
     public Fly(final Main plugin) {
@@ -19,16 +22,16 @@ public class Fly implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("fly")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("fly")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
-        if(sender instanceof final Player player) {
+        if (sender instanceof final Player player) {
 
             switch (args.length) {
                 case 0:
-                    if(!player.getAllowFlight()) {
+                    if (! player.getAllowFlight()) {
                         player.setAllowFlight(true);
                         player.sendMessage("§e§lFlight is now §a§lEnabled.");
                     } else {
@@ -37,10 +40,10 @@ public class Fly implements CommandExecutor {
                     }
                     break;
                 case 1:
-                    if(player.hasPermission("permissions.commands.flight.toggleothers")) {
+                    if (player.hasPermission("permissions.commands.flight.toggleothers")) {
                         final Player other = Bukkit.getPlayer(args[0]);
-                        if(other != null) {
-                            if(!other.getAllowFlight()) {
+                        if (other != null) {
+                            if (! other.getAllowFlight()) {
                                 other.setAllowFlight(true);
                                 player.sendMessage("§e§lFlight is now §a§lEnabled §e§lFor §3§l{NICK}§e§l.".replace("{NICK}", other.getName()));
                             } else {
@@ -59,5 +62,12 @@ public class Fly implements CommandExecutor {
             sender.sendMessage("§4§lOnly players can execute this command!");
         }
         return true;
-    }/*The End of file*/
+    }
+
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length >= 2) {
+            return Collections.emptyList();
+        }
+        return null;
+    }
 }

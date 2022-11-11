@@ -4,11 +4,14 @@ import betterserver.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
-public class Speed implements CommandExecutor {
+public class Speed implements CommandExecutor, TabCompleter{
     final Main plugin;
 
     public Speed(final Main plugin) {
@@ -22,31 +25,31 @@ public class Speed implements CommandExecutor {
         //Check if command is enabled:
 
         //Done :D
-        if(!(sender instanceof Player player)) {
+        if (! (sender instanceof Player player)) {
             sender.sendMessage("&4&lOnly players can execute this command!".replace('&', '§'));
             return true;
         } else {
             switch (label) {
                 case "flyspeed" -> {
                     //Check if command is enabled:
-                    if(this.plugin.getConfig().getStringList("DisabledCommands").contains("flyspeed")) {
+                    if (this.plugin.getConfig().getStringList("DisabledCommands").contains("flyspeed")) {
                         sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                         return true;
                     }
                     //Done :D
-                    if(args.length == 0) {
+                    if (args.length == 0) {
                         sender.sendMessage("§4§lPlease set a number 1-20 to make your flyspeed.");
                         return true;
                     }
-                    if(args.length == 1) {
-                        if((args[0]).equals("reset")) {
+                    if (args.length == 1) {
+                        if ((args[0]).equals("reset")) {
                             sender.sendMessage("§e§lYou reset your flyspeed.");
                             player.setFlySpeed((float) .1);
                             return true;
                         }
                         try {
                             int test = Integer.parseInt(args[0]);
-                            if(test < 1 || test > 10) {
+                            if (test < 1 || test > 10) {
                                 sender.sendMessage("&4&l1-10 is the allowed speed".replace('&', '§'));
                                 return true;
                             }
@@ -61,25 +64,25 @@ public class Speed implements CommandExecutor {
                 }
                 case "walkspeed" -> {
                     //Check if command is enabled:
-                    if(this.plugin.getConfig().getStringList("DisabledCommands").contains("walkspeed")) {
+                    if (this.plugin.getConfig().getStringList("DisabledCommands").contains("walkspeed")) {
                         sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                         return true;
                     }
                     //Done :D
-                    if(args.length == 0) {
+                    if (args.length == 0) {
                         sender.sendMessage("§4§lPlease set a number 1-10 to make your walkspeed.");
                         return true;
                     }
 
-                    if(args.length == 1) {
-                        if((args[0]).equals("reset")) {
+                    if (args.length == 1) {
+                        if ((args[0]).equals("reset")) {
                             sender.sendMessage("§e§lYou reset your walkspeed.");
                             player.setWalkSpeed((float) .2);
                             return true;
                         }
                         try {
                             int test = Integer.parseInt(args[0]);
-                            if(test < 1 || test > 10) {
+                            if (test < 1 || test > 10) {
                                 sender.sendMessage("&4&l1-10 is the allowed speed".replace('&', '§'));
                                 return true;
                             }
@@ -96,5 +99,12 @@ public class Speed implements CommandExecutor {
 
 
         return true;
-    }/*The End of file*/
+    }
+
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length >= 1) {
+            return Collections.emptyList();
+        }
+        return null;
+    }
 }

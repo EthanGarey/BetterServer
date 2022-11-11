@@ -5,13 +5,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 
-public class Msg implements CommandExecutor {
+public class Msg implements CommandExecutor, TabCompleter{
 
     public final HashMap<Player, Player> lastMessageSender = new HashMap<>();
     final Main plugin;
@@ -23,24 +26,24 @@ public class Msg implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("message")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("message")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
-        if(sender instanceof Player player) {
-            if(args.length > 0) {
+        if (sender instanceof Player player) {
+            if (args.length > 0) {
                 Player other = Bukkit.getPlayer(args[0]);
-                if(other != null) {
-                    if(other != player) {
-                        if(args.length > 1) {
+                if (other != null) {
+                    if (other != player) {
+                        if (args.length > 1) {
                             lastMessageSender.put(other, player);
                             lastMessageSender.put(player, other);
                             StringBuilder sb = new StringBuilder();
                             for (int i = 1; i < args.length; i++)
                                 sb.append(args[i]).append(" ");
                             String message = sb.toString();
-                            if(!this.plugin.socialSpy.SocialSpyUsers.isEmpty()) {
+                            if (! this.plugin.socialSpy.SocialSpyUsers.isEmpty()) {
                                 for (Player socialSpyUser : this.plugin.socialSpy.SocialSpyUsers) {
                                     socialSpyUser.sendMessage("§d§l[SocialSpy]{NICK} whispers to {NICKTO}:{MESSAGE}".replace("{NICK}", player.getName()).replace("{NICKTO}", other.getName()).replace("{MESSAGE}", message));
                                 }
@@ -69,5 +72,12 @@ public class Msg implements CommandExecutor {
             sender.sendMessage("§4§lOnly players can execute this command!");
         }
         return false;
-    }/*The End of file*/
+    }
+
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length >= 2) {
+            return Collections.emptyList();
+        }
+        return null;
+    }
 }

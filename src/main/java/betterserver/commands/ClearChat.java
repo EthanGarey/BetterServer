@@ -5,12 +5,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-public class ClearChat implements CommandExecutor {
+public class ClearChat implements CommandExecutor, TabCompleter{
     final Main plugin;
 
     public ClearChat(Main plugin) {
@@ -20,16 +23,16 @@ public class ClearChat implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("clearchat")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("clearchat")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
         String message = "§e§lChat cleared by " + (sender instanceof Player player ? player.getName() : "Console");
-        Bukkit.getOnlinePlayers().forEach(p -> {
-            if(!(p.hasPermission("permission.Clearchat.exempt"))) {
+        Bukkit.getOnlinePlayers().forEach(p->{
+            if (! (p.hasPermission("permission.Clearchat.exempt"))) {
                 p.sendMessage("If you see this message, report this as error code 0.");
-                IntStream.range(0, 100).forEach(i -> p.sendMessage(""));
+                IntStream.range(0, 100).forEach(i->p.sendMessage(""));
                 p.sendMessage(message);
             } else {
                 p.sendMessage("");
@@ -39,5 +42,12 @@ public class ClearChat implements CommandExecutor {
         });
         Bukkit.getConsoleSender().sendMessage(message);
         return true;
+    }
+
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length >= 1) {
+            return Collections.emptyList();
+        }
+        return null;
     }
 }

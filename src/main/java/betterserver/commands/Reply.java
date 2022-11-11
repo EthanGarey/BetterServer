@@ -5,11 +5,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
-public class Reply implements CommandExecutor {
+public class Reply implements CommandExecutor, TabCompleter{
     final Main plugin;
 
 
@@ -21,21 +24,21 @@ public class Reply implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("reply")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("reply")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
-        if(sender instanceof Player player) {
-            if(args.length > 0) {
-                if(this.plugin.msg.lastMessageSender.get(player) != null) {
+        if (sender instanceof Player player) {
+            if (args.length > 0) {
+                if (this.plugin.msg.lastMessageSender.get(player) != null) {
                     Player other = Bukkit.getPlayer(this.plugin.msg.lastMessageSender.get(player).getName());
-                    if(other != null) {
+                    if (other != null) {
                         this.plugin.msg.lastMessageSender.put(other, player);
                         StringBuilder sb = new StringBuilder();
                         for (String arg : args) sb.append(arg).append(" ");
                         String message = sb.toString();
-                        if(!this.plugin.socialSpy.SocialSpyUsers.isEmpty()) {
+                        if (! this.plugin.socialSpy.SocialSpyUsers.isEmpty()) {
                             for (Player socialSpyUser : this.plugin.socialSpy.SocialSpyUsers) {
                                 socialSpyUser.sendMessage("§d§l[SocialSpy]{NICK} whispers to {NICKTO}:{MESSAGE}".replace("{NICK}", player.getName()).replace("{NICKTO}", other.getName()).replace("{MESSAGE}", message));
                             }
@@ -55,5 +58,12 @@ public class Reply implements CommandExecutor {
             sender.sendMessage("§4§lOnly players can execute this command!");
         }
         return true;
-    }/*The End of file*/
+    }
+
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length >= 1) {
+            return Collections.emptyList();
+        }
+        return null;
+    }
 }

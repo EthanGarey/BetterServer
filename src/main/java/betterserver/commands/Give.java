@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class Give implements CommandExecutor, TabCompleter {
+public class Give implements CommandExecutor, TabCompleter{
     final Main plugin;
 
 
@@ -26,36 +26,36 @@ public class Give implements CommandExecutor, TabCompleter {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("give")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("give")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
-        if(args.length == 1) {
+        if (args.length == 1) {
             sender.sendMessage("§4§lPlease enter an item to give.");
             return true;
         }
-        if(args.length >= 2) {
+        if (args.length >= 2) {
             Player target = plugin.getServer().getPlayerExact(args[0]);
-            if(target == null) {
+            if (target == null) {
                 sender.sendMessage("§4§lCannot find player " + args[0]);
                 return true;
             }
             Material itemType = Material.matchMaterial(args[1]);
-            if(itemType == null) { //check whether the material exists
+            if (itemType == null) { //check whether the material exists
                 sender.sendMessage("§4§lUnknown material: " + args[1] + ".");
                 return true;
             }
             Player player;
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 player = (Player) sender;
             } else {
                 player = null;
             }
-            if(args.length == 2) {
+            if (args.length == 2) {
                 target.getInventory().addItem(new ItemStack(itemType, 1));
                 sender.sendMessage("§a§lYou gave " + (target.equals(player) ? "yourself" : target.getName()) + " " + 1 + " " + itemType);
-            } else if(args.length == 3) {
+            } else if (args.length == 3) {
                 try {
                     int number = Integer.parseInt(args[2]);
                     target.getInventory().addItem(new ItemStack(itemType, number));
@@ -69,9 +69,9 @@ public class Give implements CommandExecutor, TabCompleter {
     }
 
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-        if(args.length == 2)
-            return Arrays.stream(Material.values()).map(Enum::name).filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase())).toList();
-        if(args.length >= 4) return Collections.emptyList();
+        if (args.length == 2)
+            return Arrays.stream(Material.values()).map(Enum::name).filter(name->name.toLowerCase().startsWith(args[1].toLowerCase())).toList();
+        if (args.length >= 3) return Collections.emptyList();
         return null;
     }
 

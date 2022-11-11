@@ -5,14 +5,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
-public class God implements CommandExecutor, Listener {
+public class God implements CommandExecutor, Listener, TabCompleter{
     final Main plugin;
 
     public God(Main plugin) {
@@ -24,17 +27,17 @@ public class God implements CommandExecutor, Listener {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("god")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("god")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
-        if(args.length == 0) {
-            if(!(sender instanceof Player player)) {
+        if (args.length == 0) {
+            if (! (sender instanceof Player player)) {
                 sender.sendMessage("§4§lYou must be a player to execute this command.");
                 return true;
             } else {
-                if(player.isInvulnerable()) {
+                if (player.isInvulnerable()) {
                     player.setInvulnerable(false);
                     sender.sendMessage("§d§lYou are no longer invincible.");
                 } else {
@@ -47,11 +50,11 @@ public class God implements CommandExecutor, Listener {
 
         } else {
             Player target = Bukkit.getServer().getPlayer(args[0]);
-            if(target == null) {
+            if (target == null) {
                 sender.sendMessage("§4§lCan't find player by the name of " + args[1]);
                 return true;
             }
-            if((target).isInvulnerable()) {
+            if ((target).isInvulnerable()) {
                 target.setInvulnerable(false);
                 sender.sendMessage("§d§l{NICK} is no longer invincible.".replace("{NICK}", target.getName()));
                 target.sendMessage("§d§lYou are no longer invincible.");
@@ -71,9 +74,16 @@ public class God implements CommandExecutor, Listener {
 
     public void onPlayerLoseHungerEvent(FoodLevelChangeEvent event) {
 
-        if(!(event.getEntity() instanceof Player player)) return;
-        if(event.getFoodLevel() > player.getFoodLevel()) return;
-        if(!player.isInvulnerable()) return;
+        if (! (event.getEntity() instanceof Player player)) return;
+        if (event.getFoodLevel() > player.getFoodLevel()) return;
+        if (! player.isInvulnerable()) return;
         event.setCancelled(true);
+    }
+
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length >= 2) {
+            return Collections.emptyList();
+        }
+        return null;
     }
 }

@@ -9,16 +9,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.Objects;
 
-public class Main extends JavaPlugin {
-
-
+public class Main extends JavaPlugin{
     public Msg msg;
     public SocialSpy socialSpy;
 
-
-    public void updateversion() {
+    public void updateversion( ) {
         File config = new File(getDataFolder(), "config.yml");
-        if(!(config.exists())) {
+        if ( ! (config.exists()) ) {
             Bukkit.getConsoleSender().sendMessage("Config file not found, Creating one for you!");
 
         }
@@ -26,19 +23,17 @@ public class Main extends JavaPlugin {
         getConfig().set("version", Objects.requireNonNull(getConfig().getDefaults()).get("version"));
 
         saveConfig();
-        new UpdateChecker(this, 105989).getVersion(version -> {
-            if(Objects.equals(getConfig().getString("version"), version)) {
+        new UpdateChecker(this, 105989).getVersion(version->{
+            if ( Objects.equals(getConfig().getString("version"), version) ) {
                 getLogger().info("There is not a new update available.");
             } else {
                 getLogger().info("There is a new update available. {NICK} https://www.spigotmc.org/resources/betterserver.105989/updates".replace("{NICK}", version));
             }
-
         });
-
     }
 
     @Override
-    public void onEnable() {
+    public void onEnable( ) {
         // Plugin startup logic
 
         updateversion();
@@ -68,7 +63,7 @@ public class Main extends JavaPlugin {
     }
 
 
-    public void onDisable() {
+    public void onDisable( ) {
         // Plugin shutdown logic
     }
 

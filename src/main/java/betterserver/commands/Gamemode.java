@@ -15,7 +15,7 @@ import java.util.Objects;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class Gamemode implements CommandExecutor, TabCompleter {
+public class Gamemode implements CommandExecutor, TabCompleter{
     final Main plugin;
 
     public Gamemode(Main plugin) {
@@ -29,32 +29,32 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gmc")) {
-            if(label.equals("gmc")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gmc")) {
+            if (label.equals("gmc")) {
                 sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                 return true;
             }
         }
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gms")) {
-            if(label.equals("gms")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gms")) {
+            if (label.equals("gms")) {
                 sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                 return true;
             }
         }
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gma")) {
-            if(label.equals("gma")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gma")) {
+            if (label.equals("gma")) {
                 sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                 return true;
             }
         }
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gmsp")) {
-            if(label.equals("gmsp")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gmsp")) {
+            if (label.equals("gmsp")) {
                 sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                 return true;
             }
         }
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("gamemode")) {
-            if(label.equals("gamemode")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gamemode")) {
+            if (label.equals("gamemode")) {
                 sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                 return true;
             }
@@ -63,8 +63,8 @@ public class Gamemode implements CommandExecutor, TabCompleter {
         switch (label) {
             case "gmc", "gma", "gmsp", "gms" -> {
                 Player target;
-                if(args.length == 0) {
-                    if(sender instanceof Player player) {
+                if (args.length == 0) {
+                    if (sender instanceof Player player) {
                         target = player;
                     } else {
                         sender.sendMessage("§4§lPlease enter a user to set the gamemode to.");
@@ -74,7 +74,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
                     target = Bukkit.getPlayer(args[0]);
                 }
                 String gamemode = "";
-                if(target == null) {
+                if (target == null) {
                     sender.sendMessage("§4§lCan't find player by the name of " + args[0]);
                     return true;
                 }
@@ -96,22 +96,22 @@ public class Gamemode implements CommandExecutor, TabCompleter {
                         gamemode = "ADVENTURE";
                     }
                 }
-                if(!(target == sender)) {
+                if (! (target == sender)) {
                     sender.sendMessage("§e§lYou set " + target.getName() + "§e§l's gamemode to §a§l" + gamemode);
                 }
                 target.sendMessage("§e§lYour gamemode has been set to §a§l" + gamemode);
                 return true;
             }
         }
-        if(args.length == 0) {
+        if (args.length == 0) {
             sender.sendMessage("§4§lUsage: /gamemode <creative,survival,spectator,adventure> [player]");
             return true;
         }
         String usage = args[0];
         Player target;
 
-        if(args.length == 1) {
-            if(sender instanceof Player player) {
+        if (args.length == 1) {
+            if (sender instanceof Player player) {
                 target = player;
             } else {
                 sender.sendMessage("§4§lA player must execute this command!");
@@ -119,7 +119,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
             }
         } else {
             target = Bukkit.getPlayer(args[1]);
-            if(target == null) {
+            if (target == null) {
                 sender.sendMessage("§4§lCan't find player by the name of " + args[1]);
                 return true;
             }
@@ -153,8 +153,8 @@ public class Gamemode implements CommandExecutor, TabCompleter {
                     }
                 }
         }
-        if(!(args.length == 1)) {
-            if(!(target == sender)) {
+        if (! (args.length == 1)) {
+            if (! (target == sender)) {
                 sender.sendMessage("§e§lYou set " + target.getName() + "§e§l's gamemode to §a§l" + gamemode);
             }
         }
@@ -165,7 +165,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(args.length == 1) {
+        if (args.length == 1) {
             switch (label) {
                 case "gm", "gamemode" -> {
                     List<String> getgamemode = newArrayList();
@@ -178,9 +178,16 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 
                 }
             }
-
         }
-        if(args.length >= 3) {
+        if (args.length >= 2) {
+            switch (label) {
+                case "gmc", "gms", "gmsp", "gma" -> {
+                    return Collections.emptyList();
+
+                }
+            }
+        }
+        if (args.length >= 3) {
             return Collections.emptyList();
         }
         return null;

@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.Objects;
 
-@SuppressWarnings("ALL")
 public class Back implements CommandExecutor, Listener {
     final Main plugin;
 

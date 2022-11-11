@@ -5,14 +5,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
-public class Mutechat implements CommandExecutor, Listener {
+public class Mutechat implements CommandExecutor, Listener, TabCompleter{
     final Main plugin;
     public boolean chatmuted;
 
@@ -24,12 +27,12 @@ public class Mutechat implements CommandExecutor, Listener {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("mutechat")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("mutechat")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
-        if(chatmuted) {
+        if (chatmuted) {
             chatmuted = false;
             Bukkit.getConsoleSender().sendMessage("Chat unmuted by " + (sender instanceof Player player ? player.getName() : "Console"));
         } else {
@@ -40,8 +43,8 @@ public class Mutechat implements CommandExecutor, Listener {
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
 
-            if(chatmuted) {
-                if(p.hasPermission("permissions.mutechat.bypass")) {
+            if (chatmuted) {
+                if (p.hasPermission("permissions.mutechat.bypass")) {
                     p.sendMessage("§4§lChat has been muted by " + (sender instanceof Player player ? player.getName() : "Console") + (" (You can still chat as you have permission)"));
 
                 } else {
@@ -59,12 +62,19 @@ public class Mutechat implements CommandExecutor, Listener {
     @Deprecated
     public void onPlayerChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
-        if(chatmuted) {
-            if(!(player.hasPermission("permission.mutechat.bypass"))) {
+        if (chatmuted) {
+            if (! (player.hasPermission("permission.mutechat.bypass"))) {
                 player.sendMessage("§4§lYou cannot speak now, chat is currently muted.");
                 event.setCancelled(true);
             }
         }
+    }
+
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length >= 1) {
+            return Collections.emptyList();
+        }
+        return null;
     }
 
 }

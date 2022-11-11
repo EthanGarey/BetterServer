@@ -6,11 +6,14 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
-public class Teleport implements CommandExecutor {
+public class Teleport implements CommandExecutor, TabCompleter{
     final Main plugin;
 
     public Teleport(Main plugin) {
@@ -21,19 +24,19 @@ public class Teleport implements CommandExecutor {
 
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("teleport")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("teleport")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
-        if(sender instanceof Player player) {
+        if (sender instanceof Player player) {
             switch (label) {
                 case "teleport", "tp" -> {
-                    if(args.length != 0) {
+                    if (args.length != 0) {
                         Player target = Bukkit.getServer().getPlayerExact(args[0]);
-                        if(target != null) {
-                            if(args.length < 2) {
-                                if(target == player) {
+                        if (target != null) {
+                            if (args.length < 2) {
+                                if (target == player) {
                                     player.sendMessage("&e&lYou successfully teleported to yourself.".replace('&', '§'));
                                     return true;
                                 }
@@ -42,11 +45,11 @@ public class Teleport implements CommandExecutor {
                                 return true;
                             }
                             Player target2 = Bukkit.getServer().getPlayerExact(args[1]);
-                            if(target2 == null) {
+                            if (target2 == null) {
                                 player.sendMessage("&4&lCould not find player &3&l{NICK}&4&l.".replace('&', '§').replace("{NICK}", (args[1])));
                                 return true;
                             }
-                            if(target2 == player && target == player) {
+                            if (target2 == player && target == player) {
                                 player.sendMessage("&e&lYou successfully teleported to yourself.".replace('&', '§'));
                                 return true;
                             }
@@ -66,7 +69,7 @@ public class Teleport implements CommandExecutor {
                     Location location = player.getLocation();
                     cmdsender = (Player) sender;
                     for (Player player2 : player.getServer().getOnlinePlayers()) {
-                        if(player2 != cmdsender) player2.teleport(location);
+                        if (player2 != cmdsender) player2.teleport(location);
                     }
                     sender.sendMessage("§e§lYou teleported all players to you!");
 
@@ -76,5 +79,12 @@ public class Teleport implements CommandExecutor {
             sender.sendMessage("&4&lOnly players can execute this command!".replace('&', '§'));
         }
         return true;
-    }/*The End of file*/
+    }
+
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length >= 3) {
+            return Collections.emptyList();
+        }
+        return null;
+    }
 }
