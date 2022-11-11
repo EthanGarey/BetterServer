@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,7 @@ import java.util.Objects;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class Tools implements CommandExecutor, TabCompleter {
-    Main plugin;
+    final Main plugin;
 
     public Tools(Main plugin) {
 

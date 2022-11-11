@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class ClearChat implements CommandExecutor {
-    Main plugin;
+    final Main plugin;
 
     public ClearChat(Main plugin) {
         this.plugin = plugin;

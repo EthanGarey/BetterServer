@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,8 +13,8 @@ import org.bukkit.event.player.PlayerChatEvent;
 import java.util.Objects;
 
 public class Mutechat implements CommandExecutor, Listener {
+    final Main plugin;
     public boolean chatmuted;
-    Main plugin;
 
     public Mutechat(Main plugin) {
         this.plugin = plugin;

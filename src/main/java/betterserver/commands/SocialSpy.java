@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class SocialSpy implements CommandExecutor {
-    public List<Player> SocialSpyUsers = new ArrayList<>();
-    Main plugin;
+    public final List<Player> SocialSpyUsers = new ArrayList<>();
+    final Main plugin;
 
     public SocialSpy(Main plugin) {
         this.plugin = plugin;

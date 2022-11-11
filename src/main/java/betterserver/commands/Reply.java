@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.Objects;
 
 public class Reply implements CommandExecutor {
-    Main plugin;
+    final Main plugin;
 
 
     public Reply(Main plugin) {

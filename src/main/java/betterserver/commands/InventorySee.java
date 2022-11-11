@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class InventorySee implements CommandExecutor {
 
-    Main plugin;
+    final Main plugin;
 
 
     public InventorySee(Main plugin) {

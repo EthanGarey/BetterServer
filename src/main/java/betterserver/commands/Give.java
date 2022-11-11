@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 
 public class Give implements CommandExecutor, TabCompleter {
-    Main plugin;
+    final Main plugin;
 
 
     public Give(Main plugin) {

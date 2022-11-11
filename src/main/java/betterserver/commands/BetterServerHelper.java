@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +15,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class BetterServerHelper implements CommandExecutor, TabCompleter, Listener {
 
-    Main plugin;
+    final Main plugin;
 
     public BetterServerHelper(Main plugin) {
         this.plugin = plugin;
@@ -30,7 +30,7 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter, Listen
         }
         //Done :D
         switch (args.length) {
-            case 0 -> sender.sendMessage("§4§lUsage: /BetterServer [<help>,<update>, <reload>]");
+            case 0 -> sender.sendMessage("§4§lUsage: /betterserver [<help>,<update>, <reload>]");
             case 1 -> {
                 String usage = args[0];
                 switch (usage) {

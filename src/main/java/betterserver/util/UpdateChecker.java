@@ -1,4 +1,4 @@
-package BetterServer.util;
+package betterserver.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

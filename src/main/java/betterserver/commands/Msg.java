@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,8 +13,8 @@ import java.util.Objects;
 
 public class Msg implements CommandExecutor {
 
-    public HashMap<Player, Player> lastMessageSender = new HashMap<>();
-    Main plugin;
+    public final HashMap<Player, Player> lastMessageSender = new HashMap<>();
+    final Main plugin;
 
     public Msg(Main plugin) {
         this.plugin = plugin;

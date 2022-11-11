@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>BetterServer</name>
+    <name>betterserver</name>
 
     <description>Better server</description>
     <properties>

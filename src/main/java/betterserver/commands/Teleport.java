@@ -1,6 +1,6 @@
-package BetterServer.Commands;
+package betterserver.commands;
 
-import BetterServer.Main;
+import betterserver.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.Objects;
 
 public class Teleport implements CommandExecutor {
-    Main plugin;
+    final Main plugin;
 
     public Teleport(Main plugin) {
         this.plugin = plugin;

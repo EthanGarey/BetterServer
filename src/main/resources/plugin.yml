@@ -1,6 +1,6 @@
-name: BetterServer
+name: betterserver
 version: '${project.version}'
-main: BetterServer.Main
+main: betterserver.Main
 api-version: 1.19
 authors: [ EthanGarey ]
 commands:
