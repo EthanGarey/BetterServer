@@ -115,3 +115,6 @@ commands:
   mutechat:
     description: Mutes the chat
     permission: betterserver.permissions.chat.mutechat
+  more:
+    description: Sets the item in your hand to a stack of 64
+    permission: betterserver.permissions.more

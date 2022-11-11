@@ -6,16 +6,21 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.Objects;
 
 @SuppressWarnings("ALL")
-public class Back implements CommandExecutor {
+public class Back implements CommandExecutor, Listener {
     final Main plugin;
 
     public Back(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("back")).setExecutor(this);
+        this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
+
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -38,5 +43,13 @@ public class Back implements CommandExecutor {
             sender.sendMessage("§4§lYou must be a player to execute this command.");
         }
         return true;
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        if(player.hasPermission("permissions.back")) {
+            player.sendMessage("§e§lYou just died! Type /back to go to your last death location!");
+        }
     }
 }

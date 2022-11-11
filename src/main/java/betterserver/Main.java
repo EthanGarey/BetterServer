@@ -44,6 +44,7 @@ public class Main extends JavaPlugin {
         updateversion();
         this.msg = new Msg(this);
         this.socialSpy = new SocialSpy(this);
+        new More(this);
         new Trash(this);
         new Mutechat(this);
         new Give(this);

@@ -6,15 +6,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import java.util.Objects;
 
-public class God implements CommandExecutor {
+public class God implements CommandExecutor, Listener {
     final Main plugin;
 
     public God(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("god")).setExecutor(this);
+        this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
+
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -60,5 +65,15 @@ public class God implements CommandExecutor {
 
         }
         return true;
+    }
+
+    @EventHandler
+
+    public void onPlayerLoseHungerEvent(FoodLevelChangeEvent event) {
+
+        if(!(event.getEntity() instanceof Player player)) return;
+        if(event.getFoodLevel() > player.getFoodLevel()) return;
+        if(!player.isInvulnerable()) return;
+        event.setCancelled(true);
     }
 }
