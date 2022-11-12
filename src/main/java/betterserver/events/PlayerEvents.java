@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class PlayerEvents implements Listener {
+public class PlayerEvents implements Listener{
     final Main plugin;
 
     public PlayerEvents(Main plugin) {
@@ -19,16 +19,16 @@ public class PlayerEvents implements Listener {
 
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         //Check if event is enabled:
-        if(!(this.plugin.getConfig().getBoolean("ChatcolorSupport"))) {
-        }
-        //Done :D
-        else {
+        if (this.plugin.getConfig().getBoolean("ChatcolorSupport")) {
             Player player = event.getPlayer();
-            if(player.hasPermission("betterserver.permissions.chat.chatcolor")) {
+            if (player.hasPermission("betterserver.permissions.chat.chatcolor")) {
                 event.setMessage(event.getMessage().replace('&', '§'));
-
+                
             }
         }
+        //Done :D
+
+
     }
 
 

@@ -1,6 +1,11 @@
 package betterserver.commands;
 
+
 import betterserver.Main;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +18,7 @@ import java.util.Objects;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class Tools implements CommandExecutor, TabCompleter {
+public class Tools implements CommandExecutor, TabCompleter{
     final Main plugin;
 
     public Tools(Main plugin) {
@@ -34,33 +39,56 @@ public class Tools implements CommandExecutor, TabCompleter {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(sender instanceof Player player) {
 
+        if (sender instanceof Player player) {
             switch (label) {
                 case "tools" -> {
-                    if(this.plugin.getConfig().getStringList("DisabledCommands").contains("tools")) {
+                    if (this.plugin.getConfig().getStringList("DisabledCommands").contains("tools")) {
                         sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                         return true;
                     }
+                    TextComponent anvil = new TextComponent("§2§lAnvil §4§l<-- does not work");
+                    anvil.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click this to put /tools anvil in the chat!")));
+                    anvil.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tool anvil"));
+                    TextComponent workbench = new TextComponent("§2§lWorkbench");
+                    workbench.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click this to put /tools workbench in the chat!")));
+                    workbench.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tool workbench"));
+                    TextComponent furnace = new TextComponent("§2§lFurnace §4§l<-- does not work");
+                    furnace.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click this to put /tools furnace in the chat!")));
+                    furnace.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tool furnace"));
+                    TextComponent cartographytable = new TextComponent("§2§lCartographytable §4§l<-- does not work");
+                    cartographytable.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click this to put /cartographytable anvil in the chat!")));
+                    cartographytable.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tool cartographytable"));
+                    TextComponent grindstone = new TextComponent("§2§lGrindstone §4§l<-- does not work");
+                    grindstone.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click this to put /grindstone workbench in the chat!")));
+                    grindstone.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tool grindstone"));
+                    TextComponent loom = new TextComponent("§2§lFurnace §4§l<-- does not work");
+                    loom.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click this to put /tools furnace in the chat!")));
+                    loom.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tool furnace"));
+                    TextComponent smithingtable = new TextComponent("§2§lSmithingtable §4§l<-- does not work");
+                    smithingtable.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click this to put /grindstone workbench in the chat!")));
+                    smithingtable.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tool grindstone"));
+                    TextComponent stonecutter = new TextComponent("§2§lStonecutter §4§l<-- does not work");
+                    stonecutter.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click this to put /tools stonecutter in the chat!")));
+                    stonecutter.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tool stonecutter"));
                     sender.sendMessage("§a§lA list of available tools:");
                     sender.sendMessage(" ");
-                    sender.sendMessage("§2§lAnvil");
-                    sender.sendMessage("§2§lWorkbench");
-                    sender.sendMessage("§2§lFurnace");
-                    sender.sendMessage("§2§lCartographytable");
-                    sender.sendMessage("§2§lGrindstone");
-                    sender.sendMessage("§2§lLoom");
-                    sender.sendMessage("§2§lSmithingtable");
-                    sender.sendMessage("§2§lStonecutter");
-
+                    player.spigot().sendMessage(anvil);
+                    player.spigot().sendMessage(workbench);
+                    player.spigot().sendMessage(furnace);
+                    player.spigot().sendMessage(cartographytable);
+                    player.spigot().sendMessage(grindstone);
+                    player.spigot().sendMessage(loom);
+                    player.spigot().sendMessage(smithingtable);
+                    player.spigot().sendMessage(stonecutter);
                 }
                 case "tool" -> {
-                    if(this.plugin.getConfig().getStringList("DisabledCommands").contains("tool")) {
+                    if (this.plugin.getConfig().getStringList("DisabledCommands").contains("tool")) {
                         sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                         return true;
                     }
                     String arg;
-                    if(!(args.length == 0)) {
+                    if (! (args.length == 0)) {
                         arg = args[0];
                     } else {
                         sender.sendMessage("§4§lPlease enter tool to open! (Use /tools to get a list of working tools!)");
@@ -79,7 +107,7 @@ public class Tools implements CommandExecutor, TabCompleter {
                     }
                 }
                 case "workbench", "craft", "craftingtable" -> {
-                    if(this.plugin.getConfig().getStringList("DisabledCommands").contains("workbench")) {
+                    if (this.plugin.getConfig().getStringList("DisabledCommands").contains("workbench")) {
                         sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                         return true;
                     }
@@ -102,8 +130,8 @@ public class Tools implements CommandExecutor, TabCompleter {
 
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(args.length == 1) {
-            if(label.equals("tool")) {
+        if (args.length == 1) {
+            if (label.equals("tool")) {
                 List<String> toollist = newArrayList();
                 toollist.add("workbench");
                 toollist.add("furnace");
@@ -114,12 +142,15 @@ public class Tools implements CommandExecutor, TabCompleter {
                 toollist.add("stonecutter");
 
                 return toollist;
+
             }
 
+
         }
-        if(args.length >= 2) {
+        if (args.length >= 1) {
             return Collections.emptyList();
         }
         return null;
+
     }
 }
