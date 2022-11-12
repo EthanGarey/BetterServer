@@ -1,6 +1,6 @@
-package betterserver.events;
+package BetterServer.events;
 
-import betterserver.Main;
+import BetterServer.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,9 +21,9 @@ public class PlayerEvents implements Listener{
         //Check if event is enabled:
         if (this.plugin.getConfig().getBoolean("ChatcolorSupport")) {
             Player player = event.getPlayer();
-            if (player.hasPermission("betterserver.permissions.chat.chatcolor")) {
+            if (player.hasPermission("BetterServer.permissions.chat.chatcolor")) {
                 event.setMessage(event.getMessage().replace('&', '§'));
-                
+
             }
         }
         //Done :D

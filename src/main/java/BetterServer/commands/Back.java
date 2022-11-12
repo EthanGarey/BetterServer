@@ -1,6 +1,6 @@
-package betterserver.commands;
+package BetterServer.commands;
 
-import betterserver.Main;
+import BetterServer.Main;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.Objects;
 
-public class Back implements CommandExecutor, Listener {
+public class Back implements CommandExecutor, Listener{
     final Main plugin;
 
     public Back(Main plugin) {
@@ -24,14 +24,14 @@ public class Back implements CommandExecutor, Listener {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("back")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("back")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
-        if(sender instanceof Player player) {
+        if (sender instanceof Player player) {
             Location loc = player.getLastDeathLocation();
-            if(loc == null) {
+            if (loc == null) {
                 sender.sendMessage("§4§lCannot find your last death location.");
             } else {
                 player.teleport(loc);
@@ -47,7 +47,7 @@ public class Back implements CommandExecutor, Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        if(player.hasPermission("permissions.back")) {
+        if (player.hasPermission("permissions.back")) {
             player.sendMessage("§e§lYou just died! Type /back to go to your last death location!");
         }
     }

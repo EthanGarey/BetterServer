@@ -1,6 +1,6 @@
-package betterserver.commands;
+package BetterServer.commands;
 
-import betterserver.Main;
+import BetterServer.Main;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -70,7 +70,7 @@ public class Give implements CommandExecutor, TabCompleter{
 
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         if (args.length == 2)
-            return Arrays.stream(Material.values()).map(Enum::name).filter(name->name.toLowerCase().startsWith(args[1].toLowerCase())).toList();
+            return Arrays.stream(Material.values()).map(Enum::name).filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase())).toList();
         if (args.length >= 3) return Collections.emptyList();
         return null;
     }

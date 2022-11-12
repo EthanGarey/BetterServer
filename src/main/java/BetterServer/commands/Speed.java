@@ -1,6 +1,6 @@
-package betterserver.commands;
+package BetterServer.commands;
 
-import betterserver.Main;
+import BetterServer.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

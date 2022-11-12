@@ -1,6 +1,6 @@
-package betterserver.commands;
+package BetterServer.commands;
 
-import betterserver.Main;
+import BetterServer.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -76,7 +76,7 @@ public class Teleport implements CommandExecutor, TabCompleter{
                 }
             }
         } else {
-            sender.sendMessage("&4&lOnly players can execute this command!".replace('&', '§'));
+            sender.sendMessage("&4&You must be a player to execute this command.!".replace('&', '§'));
         }
         return true;
     }

@@ -1,6 +1,6 @@
-package betterserver.commands;
+package BetterServer.commands;
 
-import betterserver.Main;
+import BetterServer.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,24 +13,24 @@ import java.util.Objects;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class BetterServerHelper implements CommandExecutor, TabCompleter, Listener {
+public class BetterServerHelper implements CommandExecutor, TabCompleter, Listener{
 
     final Main plugin;
 
     public BetterServerHelper(Main plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(this.plugin.getCommand("betterserver")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("BetterServer")).setExecutor(this);
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if(this.plugin.getConfig().getStringList("DisabledCommands").contains("betterserver")) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("BetterServer")) {
             sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
             return true;
         }
         //Done :D
         switch (args.length) {
-            case 0 -> sender.sendMessage("§4§lUsage: /betterserver [<help>,<update>, <reload>]");
+            case 0 -> sender.sendMessage("§4§lUsage: /BetterServer [<help>,<update>, <reload>]");
             case 1 -> {
                 String usage = args[0];
                 switch (usage) {
@@ -55,7 +55,7 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter, Listen
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             List<String> setList = newArrayList();
             setList.add("help");
             setList.add("update");

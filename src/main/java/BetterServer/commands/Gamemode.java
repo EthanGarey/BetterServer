@@ -1,6 +1,6 @@
-package betterserver.commands;
+package BetterServer.commands;
 
-import betterserver.Main;
+import BetterServer.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -104,7 +104,7 @@ public class Gamemode implements CommandExecutor, TabCompleter{
             }
         }
         if (args.length == 0) {
-            sender.sendMessage("§4§lUsage: /gamemode <creative,survival,spectator,adventure> [player]");
+            sender.sendMessage("§4§lUsage: /gamemode <creative,survival,spectator,adventure> " + (sender instanceof Player ? "[player]" : "<player>"));
             return true;
         }
         String usage = args[0];

@@ -1,8 +1,8 @@
-package betterserver;
+package BetterServer;
 
-import betterserver.commands.*;
-import betterserver.events.PlayerEvents;
-import betterserver.util.UpdateChecker;
+import BetterServer.commands.*;
+import BetterServer.events.PlayerEvents;
+import BetterServer.util.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -56,8 +56,8 @@ public class Main extends JavaPlugin{
         new Reply(this);
         new Teleport(this);
         new Speed(this);
-        Bukkit.getConsoleSender().sendMessage("&d[betterserver] is running".replace('&', '§'));
-        Bukkit.getConsoleSender().sendMessage("&d[betterserver] made by &b&lEthan Garey".replace('&', '§'));
+        Bukkit.getConsoleSender().sendMessage("&d[BetterServer] is running".replace('&', '§'));
+        Bukkit.getConsoleSender().sendMessage("&d[BetterServer] made by &b&lEthan Garey".replace('&', '§'));
 
 
     }

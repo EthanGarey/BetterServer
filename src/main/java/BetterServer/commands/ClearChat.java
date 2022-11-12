@@ -1,6 +1,6 @@
-package betterserver.commands;
+package BetterServer.commands;
 
-import betterserver.Main;
+import BetterServer.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,10 +29,10 @@ public class ClearChat implements CommandExecutor, TabCompleter{
         }
         //Done :D
         String message = "§e§lChat cleared by " + (sender instanceof Player player ? player.getName() : "Console");
-        Bukkit.getOnlinePlayers().forEach(p->{
+        Bukkit.getOnlinePlayers().forEach(p -> {
             if (! (p.hasPermission("permission.Clearchat.exempt"))) {
                 p.sendMessage("If you see this message, report this as error code 0.");
-                IntStream.range(0, 100).forEach(i->p.sendMessage(""));
+                IntStream.range(0, 100).forEach(i -> p.sendMessage(""));
                 p.sendMessage(message);
             } else {
                 p.sendMessage("");
