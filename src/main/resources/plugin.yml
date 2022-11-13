@@ -118,3 +118,6 @@ commands:
   more:
     description: Sets the item in your hand to a stack of 64
     permission: BetterServer.permissions.more
+  rules:
+    description: Presents the player with the server rules configured in rules.txt
+    permission: BetterServer.permissions.rules
