@@ -2,6 +2,7 @@ package BetterServer;
 
 import BetterServer.commands.*;
 import BetterServer.events.PlayerEvents;
+import BetterServer.util.MetricsLite;
 import BetterServer.util.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +36,8 @@ public class Main extends JavaPlugin{
     @Override
     public void onEnable( ) {
         // Plugin startup logic
+        int pluginId = 16752;
+        new MetricsLite(this, pluginId);
 
         updateversion();
         this.msg = new Msg(this);
