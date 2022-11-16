@@ -121,3 +121,9 @@ commands:
   rules:
     description: Presents the player with the server rules configured in rules.txt
     permission: BetterServer.permissions.rules
+  spawn:
+    description: Presents the player with the server rules configured in rules.txt
+    permission: BetterServer.permissions.spawn
+  setspawn:
+    description: Presents the player with the server rules configured in rules.txt
+    permission: BetterServer.permissions.spawn.set

@@ -31,6 +31,7 @@ public class Main extends JavaPlugin{
                 getLogger().info("There is a new update available. {NICK} https://www.spigotmc.org/resources/betterserver.105989/updates".replace("{NICK}", version));
             }
         });
+
     }
 
     @Override
@@ -49,6 +50,7 @@ public class Main extends JavaPlugin{
         new Give(this);
         new Back(this);
         new Tools(this);
+        new Spawn(this);
         new InventorySee(this);
         new ClearInventory(this);
         new ClearChat(this);
