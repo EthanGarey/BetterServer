@@ -5,12 +5,18 @@ import BetterServer.events.PlayerEvents;
 import BetterServer.util.MetricsLite;
 import BetterServer.util.UpdateChecker;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Main extends JavaPlugin{
+    public static ArrayList<Player> godmode = new ArrayList<>();
+    public static HashMap<Player, Location> backlistlocation = new HashMap<>();
     public Msg msg;
     public SocialSpy socialSpy;
 
