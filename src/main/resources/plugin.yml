@@ -127,3 +127,12 @@ commands:
   setspawn:
     description: Presents the player with the server rules configured in rules.txt
     permission: BetterServer.permissions.spawn.set
+  home:
+    permission: BetterServer.permissions.home.go
+    aliases: [ "homes" ]
+  sethome:
+    permission: BetterServer.permissions.home.set
+    aliases: [ "sethome", "createhome" ]
+  delhome:
+    permission: BetterServer.permissions.home.delete
+    aliases: [ "remhome", "removehome" ]

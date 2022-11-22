@@ -20,6 +20,7 @@ public class Main extends JavaPlugin{
     public Msg msg;
     public SocialSpy socialSpy;
 
+
     public void updateversion( ) {
         File config = new File(getDataFolder(), "config.yml");
         if (! (config.exists())) {
@@ -45,10 +46,10 @@ public class Main extends JavaPlugin{
         // Plugin startup logic
         int pluginId = 16752;
         new MetricsLite(this, pluginId);
-
         updateversion();
         this.msg = new Msg(this);
         this.socialSpy = new SocialSpy(this);
+        new Homes(this);
         new Rules(this);
         new More(this);
         new Trash(this);
@@ -73,7 +74,7 @@ public class Main extends JavaPlugin{
 
 
     }
-
+    
 
     public void onDisable( ) {
         // Plugin shutdown logic

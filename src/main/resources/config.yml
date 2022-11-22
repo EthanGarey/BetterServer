@@ -18,3 +18,5 @@ ChatcolorSupport: true
 MoreCommandMaxStack: 64 #Change this is any number greater than -1000 and less than 1000
 
 SpawnCommandWaitThing: true
+
+MaxPlayerHomes: 3
