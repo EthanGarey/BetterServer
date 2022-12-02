@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,9 +15,13 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringJoiner;
 
-public class Homes implements CommandExecutor{
+import static com.google.common.collect.Lists.newArrayList;
+
+public class Homes implements CommandExecutor, TabCompleter{
 
     final FileConfiguration homeConfig = new YamlConfiguration();
     final Main plugin;
@@ -43,7 +48,16 @@ public class Homes implements CommandExecutor{
         load();
         if (sender instanceof Player player) {
             switch (label) {
-                case "home", "homes" -> {
+                case "homes" -> {
+                    if (plugin.getConfig().getStringList("DisabledCommands").contains("homes")) {
+                        player.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+                        return true;
+                    }
+                    player.sendMessage("§a§lHere is a list of your homes.");
+                    listhomes(player);
+                }
+
+                case "home" -> {
                     if (plugin.getConfig().getStringList("DisabledCommands").contains("home")) {
                         player.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                         return true;
@@ -53,11 +67,13 @@ public class Homes implements CommandExecutor{
 
                         checkifplayerhashome(player, homename);
                     } else {
+                        if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() != 0) {
+                            player.sendMessage("§a§lHere is a list of your homes.");
 
-                        player.sendMessage("§a§lHere is a list of your homes.");
-
-                        listhomes(player);
-
+                            listhomes(player);
+                        } else {
+                            player.sendMessage("§4§lYou have no homes! Use /createhome to create a home.");
+                        }
                     }
 
                 }
@@ -69,12 +85,14 @@ public class Homes implements CommandExecutor{
                     if (args.length >= 1) {
                         String homename = args[0];
                         if (! homeConfig.getStringList("Homes.Players." + player.getUniqueId()).contains(homename)) {
-                            if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() <= plugin.getConfig().getInt("MaxPlayerHomes")) {
+                            if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() <= (plugin.getConfig().getInt("MaxPlayerHomes")) - 1) {
                                 addPlayerHome(player, homename);
                             } else {
                                 player.sendMessage("§4§lError: You have reached the maximum amount of player homes!");
                             }
                         }
+                    } else {
+                        player.sendMessage("§4§lPlease enter the name of the home you would like to create.");
                     }
 
                 }
@@ -133,7 +151,7 @@ public class Homes implements CommandExecutor{
 
 
         if (homeConfig.contains("Homes.Players." + p.getUniqueId() + "." + name)) {
-            p.sendMessage("§4§lYour home, " + name + "already exists! Use /delhome to remove it!");
+            p.sendMessage("§4§lYour home, " + name + " already exists! Use /delhome to remove it!");
         } else {
             homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name);
             homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".X");
@@ -150,7 +168,7 @@ public class Homes implements CommandExecutor{
             homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Z", z);
             homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Enabled", true);
 
-            p.sendMessage("§a§lYour home " + name + " has been set to coordnates, §e§l" + x + " " + y + " " + z + "§a§l.");
+            p.sendMessage("§e§lYour home " + name + " has been set to coordnates, §a§l" + x + " " + y + " " + z + "§e§l.");
 
             load();
         }
@@ -158,9 +176,9 @@ public class Homes implements CommandExecutor{
 //    }
 
     public void listhomes(Player p) {
-        StringJoiner message = new StringJoiner(", ");
+        StringJoiner message = new StringJoiner("§2§l, ");
         for (String key : homeConfig.getConfigurationSection("Homes.Players." + p.getUniqueId()).getKeys(false)) {
-            message.add(key);
+            message.add("§a§l" + key);
         }
         p.sendMessage(message + "");
     }
@@ -199,5 +217,26 @@ public class Homes implements CommandExecutor{
         p.sendMessage("§e§lSuccesfully teleported you to your home, §a§l" + name + "§e§l.");
 
 
+    }
+
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length == 1) {
+            if (! label.equals("homes")) {
+                if (sender instanceof Player player) {
+                    List<String> gethomes = newArrayList();
+
+                    gethomes.addAll(homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false));
+
+                    return gethomes;
+                }
+
+            } else {
+                return Collections.emptyList();
+            }
+        }
+        if (args.length >= 2) {
+            return Collections.emptyList();
+        }
+        return null;
     }
 }

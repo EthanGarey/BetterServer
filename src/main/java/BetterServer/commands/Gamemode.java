@@ -128,8 +128,7 @@ public class Gamemode implements CommandExecutor, TabCompleter{
 
         String gamemode = "";
         switch (cmd.getName()) {
-            case "gamemode":
-            case "gm":
+            case "gamemode", "gm" -> {
                 switch (usage) {
                     case "spectator", "sp", "4" -> {
                         target.setGameMode(GameMode.SPECTATOR);
@@ -152,6 +151,7 @@ public class Gamemode implements CommandExecutor, TabCompleter{
                         return true;
                     }
                 }
+            }
         }
         if (! (args.length == 1)) {
             if (! (target == sender)) {
