@@ -1,6 +1,7 @@
 package BetterServer.commands;
 
 import BetterServer.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,13 @@ public class Rules implements CommandExecutor{
 
     public Rules(Main plugin) {
         this.plugin = plugin;
+        Path rulesfile = plugin.getDataFolder().toPath().resolve("rules.txt");
+
+        if (Files.notExists(rulesfile)) {
+            Bukkit.getConsoleSender().sendMessage("§4§lCould not find your rules.txt file, creating one for you!");
+            plugin.saveResource("rules.txt", false);
+
+        }
         Objects.requireNonNull(this.plugin.getCommand("rules")).setExecutor(this);
     }
 

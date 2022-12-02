@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.event.Listener;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +43,16 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter, Listen
                     }
                     case "reload" -> {
                         this.plugin.reloadConfig();
+                        File motdConfigFile = new File(plugin.getDataFolder(), "motd.yml");
+                        if (! motdConfigFile.exists()) {
+                            motdConfigFile.getParentFile().mkdirs();
+                            plugin.saveResource("homes.yml", false);
+                        }
+                        File homeConfigFile = new File(plugin.getDataFolder(), "homes.yml");
+                        if (! homeConfigFile.exists()) {
+                            homeConfigFile.getParentFile().mkdirs();
+                            plugin.saveResource("homes.yml", false);
+                        }
                         sender.sendMessage("§e§lReload complete :D!");
                     }
                     default -> //GUI LOGIC

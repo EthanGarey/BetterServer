@@ -83,6 +83,7 @@ public class Tools implements CommandExecutor, TabCompleter{
                     player.spigot().sendMessage(smithingtable);
                     player.spigot().sendMessage(stonecutter);
                 }
+
                 case "tool" -> {
                     if (this.plugin.getConfig().getStringList("DisabledCommands").contains("tool")) {
                         sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");

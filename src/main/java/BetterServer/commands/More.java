@@ -22,6 +22,7 @@ public class More implements CommandExecutor, TabCompleter{
 
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("more")).setExecutor(this);
+
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

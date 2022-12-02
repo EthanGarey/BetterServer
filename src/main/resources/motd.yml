@@ -1,0 +1,21 @@
+# This is the server motd.
+Server-MOTD:
+  #Variables: {OnlinePlayers}, {MaxPlayers}
+  Enabled: true
+  Line-1: "&b&l&m[&r&6&l ServerNameHere &b&l&m]"
+  Line-2: "&e&lWebsite &fServerWebsiteHere"
+
+# The motd of the player when they join in.
+JoinGame-MOTD:
+  Enabled: true
+  Messages:
+    - "&eWelcome to the server {Player}!"
+    - "&eThe world time is {WorldTime}!"
+
+# Server icon.
+Custom-Server-Icon:
+  # Set to true will load image from motd folder.
+  Enabled: false
+  # Make sure it's 64 x 64 pixels with png format.
+  #Also do note that this only accepts png files named server-icon.png
+

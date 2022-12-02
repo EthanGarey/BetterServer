@@ -136,3 +136,5 @@ commands:
   delhome:
     permission: BetterServer.permissions.home.delete
     aliases: [ "remhome", "removehome" ]
+  motd:
+    permission: BetterServer.permissions.motd

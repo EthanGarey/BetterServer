@@ -49,6 +49,7 @@ public class Main extends JavaPlugin{
         updateversion();
         this.msg = new Msg(this);
         this.socialSpy = new SocialSpy(this);
+        new Motd(this);
         new Homes(this);
         new Rules(this);
         new More(this);
@@ -74,7 +75,7 @@ public class Main extends JavaPlugin{
 
 
     }
-    
+
 
     public void onDisable( ) {
         // Plugin shutdown logic

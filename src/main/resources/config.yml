@@ -5,7 +5,7 @@
 #For Disabled commands please keep all commands lowercase.
 #For commands with aliases use the default one like, "tell" is actually "message"
 #And finally, for tools we only have one working so that one is workbench, so just do - workbench
-version: 0.0.3.4.3 #--Do not delete
+version: 0.0.3.4.4 #--Do not delete
 
 DisabledCommands:
 #- gmc
@@ -15,6 +15,9 @@ DisabledCommands:
 #Should we enable chatcolor support?
 ChatcolorSupport: true
 
+
+
+#Warning: make sure there is at least 2 spaces between the "'s
 MoreCommandMaxStack: 64 #Change this is any number greater than -1000 and less than 1000
 
 SpawnCommandWaitThing: true
