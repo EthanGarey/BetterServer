@@ -69,7 +69,11 @@ public class Homes implements CommandExecutor{
                     if (args.length >= 1) {
                         String homename = args[0];
                         if (! homeConfig.getStringList("Homes.Players." + player.getUniqueId()).contains(homename)) {
-                            addPlayerHome(player, homename);
+                            if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() <= plugin.getConfig().getInt("MaxPlayerHomes")) {
+                                addPlayerHome(player, homename);
+                            } else {
+                                player.sendMessage("§4§lError: You have reached the maximum amount of player homes!");
+                            }
                         }
                     }
 
