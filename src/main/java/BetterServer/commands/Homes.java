@@ -21,6 +21,7 @@ import java.util.StringJoiner;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+
 public class Homes implements CommandExecutor, TabCompleter{
 
     final FileConfiguration homeConfig = new YamlConfiguration();
@@ -43,16 +44,23 @@ public class Homes implements CommandExecutor, TabCompleter{
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
+        createHomesFile();
 
-        ifItExists();
         load();
         if (sender instanceof Player player) {
+
+            if (! homeConfig.getConfigurationSection("").contains("Homes." + "Players." + player.getUniqueId() + "")) {
+
+                homeConfig.createSection("Homes.Players." + player.getUniqueId());
+                load();
+            }
             switch (label) {
                 case "homes" -> {
                     if (plugin.getConfig().getStringList("DisabledCommands").contains("homes")) {
                         player.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
                         return true;
                     }
+
                     player.sendMessage("§a§lHere is a list of your homes.");
                     listhomes(player);
                 }
@@ -64,7 +72,6 @@ public class Homes implements CommandExecutor, TabCompleter{
                     }
                     if (args.length >= 1) {
                         String homename = args[0];
-
                         checkifplayerhashome(player, homename);
                     } else {
                         if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() != 0) {
@@ -85,11 +92,12 @@ public class Homes implements CommandExecutor, TabCompleter{
                     if (args.length >= 1) {
                         String homename = args[0];
                         if (! homeConfig.getStringList("Homes.Players." + player.getUniqueId()).contains(homename)) {
-                            if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() <= (plugin.getConfig().getInt("MaxPlayerHomes")) - 1) {
-                                addPlayerHome(player, homename);
-                            } else {
-                                player.sendMessage("§4§lError: You have reached the maximum amount of player homes!");
-                            }
+                            if (homeConfig.getStringList("Homes.Players." + player.getUniqueId()).isEmpty())
+                                if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() <= (plugin.getConfig().getInt("MaxPlayerHomes")) - 1) {
+                                    addPlayerHome(player, homename);
+                                } else {
+                                    player.sendMessage("§4§lError: You have reached the maximum amount of player homes!");
+                                }
                         }
                     } else {
                         player.sendMessage("§4§lPlease enter the name of the home you would like to create.");
@@ -128,6 +136,36 @@ public class Homes implements CommandExecutor, TabCompleter{
         }
     }
 
+    public void addPlayerHome(Player p, String name) {
+
+
+        if (homeConfig.contains("Homes.Players." + p.getUniqueId() + "." + name)) {
+            p.sendMessage("§4§lYour home, " + name + " already exists! Use /delhome to remove it!");
+        } else {
+            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name);
+            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".Enabled");
+
+
+            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".X");
+            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".Y");
+            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".Z");
+
+
+            int x = (int) p.getLocation().getX();
+            int y = (int) p.getLocation().getY();
+            int z = (int) p.getLocation().getZ();
+            homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Enabled", true);
+            homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".X", x);
+            homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Y", y);
+            homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Z", z);
+
+
+            p.sendMessage("§e§lYour home " + name + " has been set to coordnates, §a§l" + x + " " + y + " " + z + "§e§l.");
+            load();
+        }
+    }
+
+
     public void ifItExists( ) {
         File homeConfigFile = new File(this.plugin.getDataFolder(), "homes.yml");
         if (! homeConfigFile.exists()) {
@@ -147,32 +185,7 @@ public class Homes implements CommandExecutor, TabCompleter{
         load();
     }
 
-    public void addPlayerHome(Player p, String name) {
 
-
-        if (homeConfig.contains("Homes.Players." + p.getUniqueId() + "." + name)) {
-            p.sendMessage("§4§lYour home, " + name + " already exists! Use /delhome to remove it!");
-        } else {
-            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name);
-            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".X");
-            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".Y");
-            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".Z");
-            homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".Enabled");
-
-            int x = (int) p.getLocation().getX();
-            int y = (int) p.getLocation().getY();
-            int z = (int) p.getLocation().getZ();
-
-            homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".X", x);
-            homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Y", y);
-            homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Z", z);
-            homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Enabled", true);
-
-            p.sendMessage("§e§lYour home " + name + " has been set to coordnates, §a§l" + x + " " + y + " " + z + "§e§l.");
-
-            load();
-        }
-    }
 //    }
 
     public void listhomes(Player p) {
@@ -187,23 +200,30 @@ public class Homes implements CommandExecutor, TabCompleter{
         if (homeConfig.getBoolean("Homes.Players." + p.getUniqueId() + "." + name + ".Enabled")) {
             teleportplayertolocation(p, name);
 
+        } else {
+            p.sendMessage("§4§lCould not find your home, " + name);
         }
     }
 
     public void load( ) {
-        File homeConfigFile = new File(this.plugin.getDataFolder(), "homes.yml");
 
+        File homeConfigFile = new File(plugin.getDataFolder(), "homes.yml");
+        if (! homeConfigFile.exists()) {
+            homeConfigFile.getParentFile().mkdirs();
+            plugin.saveResource("homes.yml", false);
+            Bukkit.getConsoleSender().sendMessage("§4§lCould not save the file, is it being used by something?");
+        }
         try {
             homeConfig.save(homeConfigFile);
         } catch (IOException e) {
-            Bukkit.getConsoleSender().sendMessage("§4§lCould not save the file, is it being used by something?");
+            Bukkit.getConsoleSender().sendMessage("§4§lAn error occurred while reading your home.yml file, if you need help just join our discord with /betterserver help!");
         }
         try {
             homeConfig.load(homeConfigFile);
         } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
             Bukkit.getConsoleSender().sendMessage("§4§lAn error occurred while reading your home.yml file, if you need help just join our discord with /betterserver help!");
         }
-
 
     }
 
@@ -223,13 +243,16 @@ public class Homes implements CommandExecutor, TabCompleter{
         if (args.length == 1) {
             if (! label.equals("homes")) {
                 if (sender instanceof Player player) {
-                    List<String> gethomes = newArrayList();
+                    if (homeConfig.getStringList("Homes.Players").contains(player.getUniqueId() + "")) {
+                        List<String> gethomes = newArrayList();
 
-                    gethomes.addAll(homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false));
+                        gethomes.addAll(homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false));
 
-                    return gethomes;
+                        return gethomes;
+                    } else {
+                        return Collections.emptyList();
+                    }
                 }
-
             } else {
                 return Collections.emptyList();
             }

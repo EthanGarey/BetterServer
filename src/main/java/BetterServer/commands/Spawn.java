@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -19,6 +20,7 @@ import static java.lang.Thread.sleep;
 
 public class Spawn implements CommandExecutor{
     final Main plugin;
+    final FileConfiguration spawnConfig = new YamlConfiguration();
 
     public Spawn(Main plugin) {
         this.plugin = plugin;
@@ -35,7 +37,14 @@ public class Spawn implements CommandExecutor{
     }
 
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
-        //Check if command is enabled:
+
+        File spawnConfigFile = new File(this.plugin.getDataFolder(), "spawn.yml");
+        createSpawnFile();
+        try {
+            spawnConfig.load(spawnConfigFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
 
         switch (label) {
             case "spawn" -> {
@@ -44,19 +53,16 @@ public class Spawn implements CommandExecutor{
                     break;
                 }
                 if ((sender instanceof Player player)) {
-                    plugin.saveDefaultConfig();
-                    File file = new File("plugins/BetterServer", "config.yml");
-                    FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-                    if ((plugin.getConfig().getString("spawn.World")) == null) {
-                        player.sendMessage("§4§lThere is no server spawn point set up, please try again later!");
-                        break;
+                    if (! spawnConfig.getBoolean("spawn.IsEnabled")) {
+                        sender.sendMessage("§4§lThis server has no spawnpoint set!");
+                        return true;
                     }
-                    World world = Bukkit.getWorld(Objects.requireNonNull(cfg.getString("spawn.World")));
-                    double x = cfg.getDouble("spawn.X");
-                    double y = cfg.getDouble("spawn.Y");
-                    double z = cfg.getDouble("spawn.Z");
-                    float yaw = (float) cfg.getDouble("spawn.Yaw");
-                    float pitch = (float) cfg.getDouble("spawn.Pitch");
+                    World world = Bukkit.getWorld(Objects.requireNonNull(spawnConfig.getString("spawn.World")));
+                    double x = spawnConfig.getDouble("spawn.X");
+                    double y = spawnConfig.getDouble("spawn.Y");
+                    double z = spawnConfig.getDouble("spawn.Z");
+                    float yaw = (float) spawnConfig.getDouble("spawn.Yaw");
+                    float pitch = (float) spawnConfig.getDouble("spawn.Pitch");
                     if (plugin.getConfig().getBoolean("SpawnCommandWaitThing")) {
                         player.sendMessage("§e§lTeleportation commencing...");
                         wait1second();
@@ -69,7 +75,7 @@ public class Spawn implements CommandExecutor{
                     }
                     player.teleport(new Location(world, x, y, z, yaw, pitch));
                 } else {
-                    sender.sendMessage("&4&You must be a player to execute this command.!".replace('&', '§'));
+                    sender.sendMessage("&4&lYou must be a player to execute this command.!".replace('&', '§'));
                 }
             }
             case "setspawn" -> {
@@ -80,37 +86,58 @@ public class Spawn implements CommandExecutor{
                 }
 
                 if ((sender instanceof Player player)) {
-                    plugin.saveDefaultConfig();
-                    File file = new File("plugins/BetterServer", "config.yml");
-                    FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-                    String world = Objects.requireNonNull(player.getLocation().getWorld()).getName();
+
+                    spawnConfig.set("spawn.IsEnabled", true);
+                    String world = player.getLocation().getWorld().getName();
                     double x = player.getLocation().getX();
                     double y = player.getLocation().getY();
                     double z = player.getLocation().getZ();
                     double yaw = player.getLocation().getYaw();
                     double pitch = player.getLocation().getPitch();
 
-                    cfg.set("spawn" + ".World", world);
-                    cfg.set("spawn" + ".X", x);
-                    cfg.set("spawn" + ".Y", y);
-                    cfg.set("spawn" + ".Z", z);
-                    cfg.set("spawn" + ".Yaw", yaw);
-                    cfg.set("spawn" + ".Pitch", pitch);
+                    spawnConfig.set("spawn" + ".World", world);
+                    spawnConfig.set("spawn" + ".X", x);
+                    spawnConfig.set("spawn" + ".Y", y);
+                    spawnConfig.set("spawn" + ".Z", z);
+                    spawnConfig.set("spawn" + ".Yaw", yaw);
+                    spawnConfig.set("spawn" + ".Pitch", pitch);
 
                     player.sendMessage("§a§lThe server spawn has been set!");
 
                     try {
-                        cfg.save(file);
+                        spawnConfig.save(spawnConfigFile);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        player.sendMessage("&4&lError saving the spawn configuration file.");
                     }
                 } else {
-                    sender.sendMessage("&4&You must be a player to execute this command.!".replace('&', '§'));
+                    sender.sendMessage("&4&lYou must be a player to execute this command.!".replace('&', '§'));
                 }
             }
         }
 
 
         return true;
+    }
+
+    public void ifItExists( ) {
+        File spawnConfigFile = new File(this.plugin.getDataFolder(), "homes.yml");
+        if (! spawnConfigFile.exists()) {
+            plugin.saveResource("homes.yml", true);
+        }
+    }
+
+    private void createSpawnFile( ) {
+        File spawnConfigFile = new File(this.plugin.getDataFolder(), "spawn.yml");
+        ifItExists();
+        try {
+            spawnConfig.save(spawnConfigFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            spawnConfig.load(spawnConfigFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 }

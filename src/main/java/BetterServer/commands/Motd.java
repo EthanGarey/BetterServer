@@ -22,7 +22,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+
 public class Motd implements CommandExecutor, Listener, TabCompleter{
+
     final Main plugin;
     final FileConfiguration motdConfig = new YamlConfiguration();
 
@@ -43,11 +45,6 @@ public class Motd implements CommandExecutor, Listener, TabCompleter{
 
     private void createMotdFile( ) {
         ifItExists();
-        File motdConfigImage = new File(plugin.getDataFolder(), "server-icon.png");
-        if (! motdConfigImage.exists()) {
-            motdConfigImage.getParentFile().mkdirs();
-            plugin.saveResource("server-icon.png", false);
-        }
         File motdConfigFile = new File(plugin.getDataFolder(), "motd.yml");
         try {
             motdConfig.load(motdConfigFile);
@@ -124,6 +121,8 @@ public class Motd implements CommandExecutor, Listener, TabCompleter{
             } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage("And error occurred while loading the server image file!");
             }
+
+
         }
     }
 
@@ -155,5 +154,7 @@ public class Motd implements CommandExecutor, Listener, TabCompleter{
         return null;
     }
 }
+
+
 //Bukkit.getServer().getOnlinePlayers().size()
 //Bukkit.getServer().getMaxPlayers()
