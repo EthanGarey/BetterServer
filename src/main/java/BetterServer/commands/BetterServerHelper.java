@@ -48,11 +48,6 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter, Listen
                             motdConfigFile.getParentFile().mkdirs();
                             plugin.saveResource("homes.yml", false);
                         }
-                        File homeConfigFile = new File(plugin.getDataFolder(), "motd.yml");
-                        if (! homeConfigFile.exists()) {
-                            homeConfigFile.getParentFile().mkdirs();
-                            plugin.saveResource("motd.yml", false);
-                        }
                         File spawnConfigFile = new File(plugin.getDataFolder(), "spawn.yml");
                         if (! spawnConfigFile.exists()) {
                             motdConfigFile.getParentFile().mkdirs();
