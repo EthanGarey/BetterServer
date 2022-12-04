@@ -43,14 +43,14 @@ public class BetterServerHelper implements CommandExecutor, TabCompleter, Listen
                     }
                     case "reload" -> {
                         this.plugin.reloadConfig();
-                        File motdConfigFile = new File(plugin.getDataFolder(), "homes.yml");
-                        if (! motdConfigFile.exists()) {
-                            motdConfigFile.getParentFile().mkdirs();
+                        File homeConfigFile = new File(plugin.getDataFolder(), "homes.yml");
+                        if (! homeConfigFile.exists()) {
+                            homeConfigFile.getParentFile().mkdirs();
                             plugin.saveResource("homes.yml", false);
                         }
                         File spawnConfigFile = new File(plugin.getDataFolder(), "spawn.yml");
                         if (! spawnConfigFile.exists()) {
-                            motdConfigFile.getParentFile().mkdirs();
+                            spawnConfigFile.getParentFile().mkdirs();
                             plugin.saveResource("spawn.yml", false);
                         }
                         sender.sendMessage("§e§lReload complete :D!");
