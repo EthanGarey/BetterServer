@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 public class Speed implements CommandExecutor, TabCompleter{
     final Main plugin;
 
@@ -38,7 +40,7 @@ public class Speed implements CommandExecutor, TabCompleter{
                     }
                     //Done :D
                     if (args.length == 0) {
-                        sender.sendMessage("§4§lPlease set a number 1-20 to make your flyspeed.");
+                        sender.sendMessage("§4§lPlease set a number 1-10 to make your flyspeed.");
                         return true;
                     }
                     if (args.length == 1) {
@@ -102,8 +104,29 @@ public class Speed implements CommandExecutor, TabCompleter{
     }
 
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length >= 1) {
-            return Collections.emptyList();
+        if (sender instanceof Player) {
+            if (args.length == 1) {
+
+                List<String> list = newArrayList();
+
+
+                list.add("9");
+                list.add("8");
+                list.add("7");
+                list.add("6");
+                list.add("5");
+                list.add("4");
+                list.add("3");
+                list.add("2");
+                list.add("1");
+
+                list.add("reset");
+                return list;
+            }
+            if (args.length >= 2) {
+                return Collections.emptyList();
+            }
+
         }
         return null;
     }

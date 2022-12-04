@@ -39,7 +39,7 @@ public class Trash implements CommandExecutor, TabCompleter{
     }
 
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length >= 1) {
+        if (args.length >= 2) {
             return Collections.emptyList();
         }
         return null;

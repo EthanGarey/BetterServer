@@ -52,11 +52,11 @@ public class God implements CommandExecutor, Listener, TabCompleter{
                     if (t != p) {
                         if (! Main.godmode.contains(t)) {
                             Main.godmode.add(t);
-                            p.sendMessage("§a§l" + t + "§e§lis now invincible!");
+                            p.sendMessage("§a§l" + t.getName() + "§e§lis now invincible!");
                             t.sendMessage("§a§lYou are now invincible!");
                         } else {
                             Main.godmode.remove(t);
-                            p.sendMessage("§a§l" + t + "§e§lis no longer invincible");
+                            p.sendMessage("§a§l" + t.getName() + "§e§lis no longer invincible");
                             t.sendMessage("§a§lYou are no longer invincible!");
                         }
                     } else if (! Main.godmode.contains(p)) {

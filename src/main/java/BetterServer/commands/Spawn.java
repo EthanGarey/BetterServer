@@ -16,8 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-import static java.lang.Thread.sleep;
-
 public class Spawn implements CommandExecutor{
     final Main plugin;
     final FileConfiguration spawnConfig = new YamlConfiguration();
@@ -28,23 +26,11 @@ public class Spawn implements CommandExecutor{
         Objects.requireNonNull(this.plugin.getCommand("setspawn")).setExecutor(this);
     }
 
-    private void wait1second( ) {
-        try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
 
         File spawnConfigFile = new File(this.plugin.getDataFolder(), "spawn.yml");
         createSpawnFile();
-        try {
-            spawnConfig.load(spawnConfigFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
 
         switch (label) {
             case "spawn" -> {
@@ -65,15 +51,13 @@ public class Spawn implements CommandExecutor{
                     float pitch = (float) spawnConfig.getDouble("spawn.Pitch");
                     if (plugin.getConfig().getBoolean("SpawnCommandWaitThing")) {
                         player.sendMessage("§e§lTeleportation commencing...");
-                        wait1second();
-                        player.sendMessage("§e§lYou will be teleported in 3");
-                        wait1second();
-                        player.sendMessage("§e§lYou will be teleported in 2");
-                        wait1second();
-                        player.sendMessage("§e§lYou will be teleported in 1");
-                        wait1second();
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ( ) -> player.sendMessage("§e§lYou will be teleported in 3 seconds"), 20);
+
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ( ) -> player.sendMessage("§e§lYou will be teleported in 2 seconds"), 40);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ( ) -> player.sendMessage("§e§lYou will be teleported in 1 second"), 60);
+
                     }
-                    player.teleport(new Location(world, x, y, z, yaw, pitch));
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ( ) -> player.teleport(new Location(world, x, y, z, yaw, pitch)), 70);
                 } else {
                     sender.sendMessage("&4&lYou must be a player to execute this command.!".replace('&', '§'));
                 }
@@ -129,14 +113,15 @@ public class Spawn implements CommandExecutor{
     private void createSpawnFile( ) {
         File spawnConfigFile = new File(this.plugin.getDataFolder(), "spawn.yml");
         ifItExists();
-        try {
-            spawnConfig.save(spawnConfigFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         try {
             spawnConfig.load(spawnConfigFile);
         } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        try {
+            spawnConfig.save(spawnConfigFile);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -5,7 +5,7 @@
 #For Disabled commands please keep all commands lowercase.
 #For commands with aliases use the default one like, "tell" is actually "message"
 #And finally, for tools we only have one working so that one is workbench, so just do - workbench
-version: 0.0.3.4.6 #--Do not delete
+version: 0.0.3.4.7 #--Do not delete
 
 DisabledCommands:
 #- gmc
@@ -15,8 +15,26 @@ DisabledCommands:
 #Should we enable chatcolor support?
 ChatcolorSupport: true
 
+# This is the server motd.
+Server-MOTD:
+  #Variables: {OnlinePlayers}, {MaxPlayers}
+  Enabled: true
+  Line-1: "&b&l&m[&r&6&l ServerNameHere &b&l&m]"
+  Line-2: "&e&lWebsite &fServerWebsiteHere"
 
+# The motd of the player when they join in.
+JoinGame-MOTD:
+  Enabled: true
+  Messages:
+    - "&eWelcome to the server {Player}!"
+    - "&eThe world time is {WorldTime}!"
 
+# Server icon.
+Custom-Server-Icon:
+  # Set to true will load image from motd folder.
+  Enabled: false
+  # Make sure it's 64 x 64 pixels with png format.
+  #Also do note that this only accepts png files named server-icon.png
 
 #Warning: make sure there is at least 2 spaces between the "'s
 MoreCommandMaxStack: 64 #Change this is any number greater than -1000 and less than 1000
@@ -24,3 +42,4 @@ MoreCommandMaxStack: 64 #Change this is any number greater than -1000 and less t
 SpawnCommandWaitThing: true
 
 MaxPlayerHomes: 3
+
