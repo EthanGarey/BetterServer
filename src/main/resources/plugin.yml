@@ -5,127 +5,80 @@ api-version: 1.19
 authors: [ EthanGarey ]
 commands:
   trash:
-    description: Opens a trash bin to remove player items
     permission: BetterServer.permissions.commands.trash
   fly:
-    description: Toggles flight for player.
     permission: BetterServer.permissions.commands.flight.toggle
   walkspeed:
-    description: Changes the walk speed of the player
     permission: BetterServer.permissions.commands.walk.speed
   flyspeed:
-    description: Changes the flight speed of the player
     permission: BetterServer.permissions.commands.flight.speed
   msg:
-    description: Message another player.
     aliases: [ "message", "w", "tell" ]
     permission: BetterServer.permissions.commands.message
   reply:
-    description: Reply to a players message.
     aliases: [ "r", "reply" ]
     permission: BetterServer.permissions.commands.message.reply
   teleport:
     aliases: [ "tp" ]
-    description: Allows you to use teleports.
     permission: BetterServer.permissions.commands.teleport
   tpall:
     aliases: [ "bringall" ]
-    description: Teleports all online players to you.
     permission: BetterServer.permissions.commands.teleport.others.all
   socialspy:
-    description: Allows you to watch others conversations secretly!
     permission: BetterServer.permissions.socialspy
   #Gamemode#
   gamemode:
     aliases: [ "gm" ]
-    description: Change a specified or your gamemode
     permission: BetterServer.permissions.gamemode
   gmc:
-    description: Change a specified or your gamemode
     permission: BetterServer.permissions.gamemode
   gms:
-    description: Change a specified or your gamemode
     permission: BetterServer.permissions.gamemode
   gma:
-    description: Change a specified or your gamemode
     permission: BetterServer.permissions.gamemode
   gmsp:
-    description: Change a specified or your gamemode
     permission: BetterServer.permissions.gamemode
   #Gamemode#
   betterserver:
-    description: Plugin help menu
+    usage: "§4§lUsage: /BetterServer [<help>,<update>, <reload>]"
+
     permission: BetterServer.permissions.bettercommands.menu
   god:
-    description: Toggles invincibility for the player.
+    usage: §a§l/god [<player>]
     permission: BetterServer.permissions.god
   clearchat:
     aliases: [ "cc" ]
-    description: Clears the chat
     permission: BetterServer.permissions.clearchat
   clear:
     permission: BetterServer.permissions.clear
-    description: Clears your inventory
     aliases: [ "ci", "clearinventory" ]
   invsee:
     aliases: [ "viewinventory" ]
-    description: View a players inventory
     permission: BetterServer.permissions.invsee
   back:
-    description: Go to your last death place.
     permission: BetterServer.permissions.back
   give:
-    description: Gives you a item of your choice
     permission: BetterServer.permissions.give
     aliases: [ "i" ]
   #tools#
   workbench:
     aliases: [ "craft", "craftingtable" ]
-    description: Opens a workbench
     permission: BetterServer.permissions.tools.workbench
-  furnace:
-    description: Opens a furnace
-    permission: BetterServer.permissions.tools.furnace
-  anvil:
-    aliases: [ "av" ]
-    description: Opens a anvil
-    permission: BetterServer.permissions.tools.anvil
-  cartographytable:
-    description: Opens a cartography table
-    permission: BetterServer.permissions.tools.cartographytable
-  grindstone:
-    description: Opens a grindstone
-    permission: BetterServer.permissions.tools.grindstone
-  loom:
-    description: Opens a loom
-    permission: BetterServer.permissions.tools.loom
-  smithingtable:
-    description: Opens a smithingtable
-    permission: BetterServer.permissions.tools.smithingtable
-  stonecutter:
-    description: Opens a stonecutter
-    permission: BetterServer.permissions.tools.stonecutter
+
   tool:
-    description: Allows you to open a specific tool based on the first argument
     permission: BetterServer.permissions.tools
   tools:
-    description: Allows you to open a specific tool based on the first argument
     permission: BetterServer.permissions.tools.list
     #Tools#
   mutechat:
-    description: Mutes the chat
     permission: BetterServer.permissions.chat.mutechat
   more:
-    description: Sets the item in your hand to a stack of 64
     permission: BetterServer.permissions.more
   rules:
-    description: Presents the player with the server rules configured in rules.txt
     permission: BetterServer.permissions.rules
   spawn:
-    description: Presents the player with the server rules configured in rules.txt
     permission: BetterServer.permissions.spawn
   setspawn:
-    description: Presents the player with the server rules configured in rules.txt
     permission: BetterServer.permissions.spawn.set
   home:
     permission: BetterServer.permissions.home.go

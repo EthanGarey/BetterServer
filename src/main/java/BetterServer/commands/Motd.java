@@ -26,11 +26,19 @@ public class Motd implements CommandExecutor, Listener, TabCompleter{
     public Motd(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("motd")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("motd")).setDescription(plugin.getMessage("motdCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("motd")).setUsage(plugin.getMessage("motdCommandUsage"));
+
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
 
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
+            return true;
+        }
         sendPlayerMotdToPlayer(sender);
         return true;
     }
@@ -40,7 +48,7 @@ public class Motd implements CommandExecutor, Listener, TabCompleter{
         int size = plugin.getConfig().getStringList("JoinGame-MOTD.Messages").size();
         int get = 0;
         if (! (p instanceof Player)) {
-            p.sendMessage("§e§lInfo: If you §4this§e message it means that you are typing motd in console. We will send you the original message in the motd configuration with variables.");
+            p.sendMessage(plugin.getMessage("motdCommandInfoConsole"));
         }
         while (size > 0) {
             if (p instanceof Player player) {

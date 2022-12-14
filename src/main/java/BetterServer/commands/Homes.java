@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -37,16 +38,27 @@ public class Homes implements CommandExecutor, TabCompleter{
         load();
 
         plugin.getCommand("home").setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("home")).setDescription(plugin.getMessage("homeCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("home")).setUsage(plugin.getMessage("homeCommandUsage"));
         plugin.getCommand("sethome").setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("sethome")).setDescription(plugin.getMessage("setHomeCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("sethome")).setUsage(plugin.getMessage("setHomeCommandUsage"));
         plugin.getCommand("delhome").setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("delhome")).setDescription(plugin.getMessage("delHomeCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("delHome")).setUsage(plugin.getMessage("delHomeCommandUsage"));
 
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
 
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
+            return true;
+        }
         createHomesFile();
 
         load();
+
         if (sender instanceof Player player) {
 
             if (! homeConfig.getConfigurationSection("").contains("Homes." + "Players." + player.getUniqueId() + "")) {
@@ -56,39 +68,34 @@ public class Homes implements CommandExecutor, TabCompleter{
             }
             switch (label) {
                 case "homes" -> {
-                    if (plugin.getConfig().getStringList("DisabledCommands").contains("homes")) {
-                        player.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                        return true;
-                    }
 
-                    player.sendMessage("§a§lHere is a list of your homes.");
-                    listhomes(player);
+                    if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() != 0) {
+                        sender.sendMessage(plugin.getMessage("homeCommandHereIsListOfHomes"));
+
+                        listhomes(player);
+                    } else {
+                        sender.sendMessage(plugin.getMessage("homeCommandNoHomes"));
+                    }
                 }
 
                 case "home" -> {
-                    if (plugin.getConfig().getStringList("DisabledCommands").contains("home")) {
-                        player.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                        return true;
-                    }
+
                     if (args.length >= 1) {
                         String homename = args[0];
                         checkifplayerhashome(player, homename);
                     } else {
                         if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() != 0) {
-                            player.sendMessage("§a§lHere is a list of your homes.");
+                            sender.sendMessage(plugin.getMessage("homeCommandHereIsListOfHomes"));
 
                             listhomes(player);
                         } else {
-                            player.sendMessage("§4§lYou have no homes! Use /createhome to create a home.");
+                            sender.sendMessage(plugin.getMessage("homeCommandNoHomes"));
                         }
                     }
 
                 }
                 case "sethome", "createhome" -> {
-                    if (this.plugin.getConfig().getStringList("DisabledCommands").contains("sethome")) {
-                        player.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                        return true;
-                    }
+
                     if (args.length >= 1) {
                         String homename = args[0];
                         if (! homeConfig.getStringList("Homes.Players." + player.getUniqueId()).contains(homename)) {
@@ -96,31 +103,28 @@ public class Homes implements CommandExecutor, TabCompleter{
                                 if (homeConfig.getConfigurationSection("Homes.Players." + player.getUniqueId()).getKeys(false).size() <= (plugin.getConfig().getInt("MaxPlayerHomes")) - 1) {
                                     addPlayerHome(player, homename);
                                 } else {
-                                    player.sendMessage("§4§lError: You have reached the maximum amount of player homes!");
+                                    sender.sendMessage(plugin.getMessage("homeCommandMaxHomesError"));
                                 }
                         }
                     } else {
-                        player.sendMessage("§4§lPlease enter the name of the home you would like to create.");
+                        sender.sendMessage(plugin.getMessage("homeCommandEnterNameError"));
                     }
 
                 }
                 case "delhome", "remhome", "removehome" -> {
-                    if (this.plugin.getConfig().getStringList("DisabledCommands").contains("delhome")) {
-                        player.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                        return true;
-                    }
+
                     if (args.length >= 1) {
                         String homename = args[0];
                         removePlayerHome(player, homename);
                     } else {
-                        player.sendMessage("§a§lHere is a list of your homes.");
+                        sender.sendMessage(plugin.getMessage("homeCommandHereIsListOfHomes"));
                         listhomes(player);
                     }
                 }
 
             }
         } else {
-            sender.sendMessage("§4§lOnly players can use this command.");
+            sender.sendMessage(plugin.getMessage("notAPlayer"));
         }
         return true;
     }
@@ -140,7 +144,7 @@ public class Homes implements CommandExecutor, TabCompleter{
 
 
         if (homeConfig.contains("Homes.Players." + p.getUniqueId() + "." + name)) {
-            p.sendMessage("§4§lYour home, " + name + " already exists! Use /delhome to remove it!");
+            p.sendMessage(plugin.getMessage("homeCommandHomeAlreadyExists").replace("{0}", name));
         } else {
             homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name);
             homeConfig.createSection("Homes.Players." + p.getUniqueId() + "." + name + ".Enabled");
@@ -158,9 +162,7 @@ public class Homes implements CommandExecutor, TabCompleter{
             homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".X", x);
             homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Y", y);
             homeConfig.set("Homes.Players." + p.getUniqueId() + "." + name + ".Z", z);
-
-
-            p.sendMessage("§e§lYour home " + name + " has been set to coordnates, §a§l" + x + " " + y + " " + z + "§e§l.");
+            p.sendMessage(plugin.getMessage("homeCommandHomeCreated").replace("{0}", name).replace("{1}", x + "").replace("{2}", y + "").replace("{3}", z + ""));
             load();
         }
     }
@@ -176,10 +178,10 @@ public class Homes implements CommandExecutor, TabCompleter{
     public void removePlayerHome(Player p, String name) {
 
         if (! homeConfig.contains("Homes.Players." + p.getUniqueId() + "." + name)) {
-            p.sendMessage("§4§lCould not find your home, " + name + " use /homes to show you a list of your homes!");
+            p.sendMessage(plugin.getMessage("homeCommandCouldNotFindHome").replace("0", name));
         } else {
             homeConfig.set(("Homes.Players." + p.getUniqueId() + "." + name), null);
-            p.sendMessage("§4§lYour home, " + name + " has been removed!");
+            p.sendMessage(plugin.getMessage("homeCommandRemovedHome").replace("{0}", name));
         }
 
         load();
@@ -201,7 +203,7 @@ public class Homes implements CommandExecutor, TabCompleter{
             teleportplayertolocation(p, name);
 
         } else {
-            p.sendMessage("§4§lCould not find your home, " + name);
+            p.sendMessage(plugin.getMessage("homeCommandCouldNotFindHome").replace("{0}", name));
         }
     }
 
@@ -234,7 +236,7 @@ public class Homes implements CommandExecutor, TabCompleter{
         int y = (int) homeConfig.get("Homes.Players." + p.getUniqueId() + "." + name + ".Y");
         int z = (int) homeConfig.get("Homes.Players." + p.getUniqueId() + "." + name + ".Z");
         p.teleport(new Location(world, x, y, z));
-        p.sendMessage("§e§lSuccesfully teleported you to your home, §a§l" + name + "§e§l.");
+        p.sendMessage(plugin.getMessage("homeCommandTeleportSuccess").replace("{0}", name));
 
 
     }

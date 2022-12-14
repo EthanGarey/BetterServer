@@ -22,48 +22,60 @@ public class Give implements CommandExecutor, TabCompleter{
     public Give(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("give")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("give")).setDescription(plugin.getMessage("giveCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("give")).setUsage(plugin.getMessage("giveCommandUsage"));
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("give")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
+        }
+        if (args.length == 0) {
+            return false;
         }
         //Done :D
         if (args.length == 1) {
-            sender.sendMessage("§4§lPlease enter an item to give.");
+            sender.sendMessage(plugin.getMessage("giveCommandEnterItemToGive"));
             return true;
         }
-        if (args.length >= 2) {
-            Player target = plugin.getServer().getPlayerExact(args[0]);
-            if (target == null) {
-                sender.sendMessage("§4§lCannot find player " + args[0]);
-                return true;
-            }
-            Material itemType = Material.matchMaterial(args[1]);
-            if (itemType == null) { //check whether the material exists
-                sender.sendMessage("§4§lUnknown material: " + args[1] + ".");
-                return true;
-            }
-            Player player;
-            if (sender instanceof Player) {
-                player = (Player) sender;
+        Player target = plugin.getServer().getPlayerExact(args[0]);
+        if (target == null) {
+            sender.sendMessage(plugin.getMessage("cannotFindPlayer").replace("{0}", args[0]));
+            return true;
+        }
+        Material itemType = Material.matchMaterial(args[1]);
+        if (itemType == null) { //check whether the material exists
+            sender.sendMessage(plugin.getMessage("giveCommandUnknownMaterial").replace("{0}", args[1]));
+            return true;
+        }
+        Player player;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        } else {
+            player = null;
+        }
+        if (args.length == 2) {
+            target.getInventory().addItem(new ItemStack(itemType, 1));
+            if (target == player) {
+                sender.sendMessage(plugin.getMessage("giveCommandGaveYourselfItem").replace("{0}", "1").replace("{1}", itemType.toString()));
             } else {
-                player = null;
+                sender.sendMessage(plugin.getMessage("giveCommandGaveTargetItem").replace("{0}", target.getName()).replace("{1}", "1").replace("{2}", itemType.toString()));
             }
-            if (args.length == 2) {
-                target.getInventory().addItem(new ItemStack(itemType, 1));
-                sender.sendMessage("§a§lYou gave " + (target.equals(player) ? "yourself" : target.getName()) + " " + 1 + " " + itemType);
-            } else if (args.length == 3) {
-                try {
-                    int number = Integer.parseInt(args[2]);
-                    target.getInventory().addItem(new ItemStack(itemType, number));
-                    sender.sendMessage("§a§lYou gave " + (target.equals(player) ? "yourself" : target.getName()) + " " + number + " " + itemType + "'s.");
-                } catch (NumberFormatException ex) {
-                    sender.sendMessage("§4§lYou must specify a number");
+        } else if (args.length == 3) {
+            try {
+                int number = Integer.parseInt(args[2]);
+                target.getInventory().addItem(new ItemStack(itemType, number));
+                if (target == player) {
+                    sender.sendMessage(plugin.getMessage("giveCommandGaveYourselfItem").replace("{0}", number + "").replace("{1}", itemType.toString()));
+                } else {
+                    sender.sendMessage(plugin.getMessage("giveCommandGaveTargetItem").replace("{0}", target.getName() + "").replace("{1}", number + "").replace("{2}", itemType.toString()));
                 }
-            } else sender.sendMessage("§4§lUsage: /give <playername> <material> [<amount>]");
+            } catch (NumberFormatException ex) {
+                sender.sendMessage(plugin.getMessage("giveCommandCannotFindNumber"));
+            }
         }
         return true;
     }

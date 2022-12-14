@@ -20,79 +20,81 @@ public class Speed implements CommandExecutor, TabCompleter{
 
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("flyspeed")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("flyspeed")).setDescription(plugin.getMessage("flyspeedCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("flyspeed")).setUsage(plugin.getMessage("flyspeedCommandUsage"));
         Objects.requireNonNull(this.plugin.getCommand("walkspeed")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("walkspeed")).setDescription(plugin.getMessage("walkspeedCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("walkspeed")).setUsage(plugin.getMessage("walkspeedCommandUsage"));
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
 
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
+            return true;
+        }
         //Done :D
         if (! (sender instanceof Player player)) {
-            sender.sendMessage("&4&lOnly players can execute this command!".replace('&', '§'));
+            sender.sendMessage(plugin.getMessage("notAPlayer"));
             return true;
         } else {
             switch (label) {
                 case "flyspeed" -> {
                     //Check if command is enabled:
-                    if (this.plugin.getConfig().getStringList("DisabledCommands").contains("flyspeed")) {
-                        sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                        return true;
-                    }
+
                     //Done :D
                     if (args.length == 0) {
-                        sender.sendMessage("§4§lPlease set a number 1-10 to make your flyspeed.");
+                        sender.sendMessage(plugin.getMessage("flyspeedCommandWrongUsage"));
                         return true;
                     }
                     if (args.length == 1) {
                         if ((args[0]).equals("reset")) {
-                            sender.sendMessage("§e§lYou reset your flyspeed.");
+                            sender.sendMessage(plugin.getMessage("flyspeedCommandReset"));
                             player.setFlySpeed((float) .1);
                             return true;
                         }
                         try {
                             int test = Integer.parseInt(args[0]);
                             if (test < 1 || test > 10) {
-                                sender.sendMessage("&4&l1-10 is the allowed speed".replace('&', '§'));
+                                sender.sendMessage(plugin.getMessage("flyspeedCommandReturnError"));
                                 return true;
                             }
                             final float speed = (float) test / 10;
                             player.setFlySpeed(speed);
-                            player.sendMessage("&e&lFly speed is set now to &a&l{SPEEDFLOAT}".replace('&', '§').replace("{SPEEDFLOAT}", ("" + speed).replace(".0", "")));
+                            sender.sendMessage(plugin.getMessage("flyspeedSuccessMessage").replace("{0}", speed + ""));
                         } catch (NumberFormatException ex) {
-                            sender.sendMessage("&4You are meant to use only numbers here.".replace('&', '§'));
+                            sender.sendMessage(plugin.getMessage("speedCommandsNumberError"));
                         }
                         return true;
                     }
                 }
                 case "walkspeed" -> {
                     //Check if command is enabled:
-                    if (this.plugin.getConfig().getStringList("DisabledCommands").contains("walkspeed")) {
-                        sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                        return true;
-                    }
+
                     //Done :D
                     if (args.length == 0) {
-                        sender.sendMessage("§4§lPlease set a number 1-10 to make your walkspeed.");
+                        sender.sendMessage(plugin.getMessage("walkspeedCommandWrongUsage"));
                         return true;
                     }
 
                     if (args.length == 1) {
                         if ((args[0]).equals("reset")) {
-                            sender.sendMessage("§e§lYou reset your walkspeed.");
+                            sender.sendMessage(plugin.getMessage("walkspeedCommandReset"));
                             player.setWalkSpeed((float) .2);
                             return true;
                         }
                         try {
                             int test = Integer.parseInt(args[0]);
                             if (test < 1 || test > 10) {
-                                sender.sendMessage("&4&l1-10 is the allowed speed".replace('&', '§'));
+                                sender.sendMessage(plugin.getMessage("walkspeedCommandReturnError"));
                                 return true;
                             }
                             final float speed = (float) test / 10;
                             player.setWalkSpeed(speed);
-                            player.sendMessage("&e&lWalk speed is set now to &a&l{SPEEDFLOAT}".replace('&', '§').replace("{SPEEDFLOAT}", ("" + speed).replace(".0", "")));
+                            sender.sendMessage(plugin.getMessage("walkspeedSuccessMessage").replace("{0}", speed + ""));
                         } catch (NumberFormatException ex) {
-                            sender.sendMessage("&4You are meant to use only numbers here.".replace('&', '§'));
+                            sender.sendMessage(plugin.getMessage("speedCommandsNumberError"));
                         }
                     }
                 }

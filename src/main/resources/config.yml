@@ -5,12 +5,15 @@
 #For Disabled commands please keep all commands lowercase.
 #For commands with aliases use the default one like, "tell" is actually "message"
 #And finally, for tools we only have one working so that one is workbench, so just do - workbench
-version: 0.0.3.4.7 #--Do not delete
+version: 0.0.3.4.8 #--Do not delete
+
+Language: en
 
 DisabledCommands:
-#- gmc
-#- gamemode
-#- tpall
+  - test
+  #- gmc
+  #- gamemode
+  #- tpall
 
 #Should we enable chatcolor support?
 ChatcolorSupport: true

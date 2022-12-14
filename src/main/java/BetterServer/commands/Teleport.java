@@ -19,13 +19,18 @@ public class Teleport implements CommandExecutor, TabCompleter{
     public Teleport(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("teleport")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("teleport")).setDescription(plugin.getMessage("teleportCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("teleport")).setUsage(plugin.getMessage("teleportCommandUsage"));
         Objects.requireNonNull(this.plugin.getCommand("tpall")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("tpall")).setDescription(plugin.getMessage("tpallCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("tpall")).setUsage(plugin.getMessage("tpallCommandUsage"));
     }
 
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("teleport")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
         }
         //Done :D
@@ -37,30 +42,30 @@ public class Teleport implements CommandExecutor, TabCompleter{
                         if (target != null) {
                             if (args.length < 2) {
                                 if (target == player) {
-                                    player.sendMessage("&e&lYou successfully teleported to yourself.".replace('&', '§'));
+                                    sender.sendMessage(plugin.getMessage("teleportCommandTeleportSelf"));
                                     return true;
                                 }
                                 player.teleport(target.getLocation());
-                                player.sendMessage("&e&lYou successfully teleported to &3&l{NICK}&e&l.!".replace('&', '§').replace("{NICK}", (args[0])));
+                                sender.sendMessage(plugin.getMessage("teleportCommandTeleportOther"));
                                 return true;
                             }
                             Player target2 = Bukkit.getServer().getPlayerExact(args[1]);
                             if (target2 == null) {
-                                player.sendMessage("&4&lCould not find player &3&l{NICK}&4&l.".replace('&', '§').replace("{NICK}", (args[1])));
+                                sender.sendMessage(plugin.getMessage("cannotFindPlayer").replace("{0}", args[0]));
                                 return true;
                             }
                             if (target2 == player && target == player) {
-                                player.sendMessage("&e&lYou successfully teleported to yourself.".replace('&', '§'));
+                                sender.sendMessage(plugin.getMessage("teleportCommandTeleportSelf"));
                                 return true;
                             }
                             target.teleport(target2.getLocation());
-                            player.sendMessage("&e&lYou successfully teleported &3&l{NICK} &e&lto &3&l{TO}&e&l.!".replace('&', '§').replace("{NICK}", (args[0])).replace("{TO}", (args[1])));
+                            sender.sendMessage(plugin.getMessage("teleportCommandTeleportOtherToOther").replace("{0}", args[0]).replace("{1}", args[1]));
                             return true;
                         } else {
-                            player.sendMessage("&4&lCloud not find player &3&l{NICK}&4&l!".replace('&', '§').replace("{NICK}", (args[0])));
+                            sender.sendMessage(plugin.getMessage("cannotFindPlayer").replace("{0}", args[0]));
                         }
                     } else {
-                        player.sendMessage("&4&lPlease specify a player.".replace('&', '§'));
+                        sender.sendMessage(plugin.getMessage("pleaseSpecifyPlayer"));
                     }
                     return true;
                 }
@@ -71,12 +76,12 @@ public class Teleport implements CommandExecutor, TabCompleter{
                     for (Player player2 : player.getServer().getOnlinePlayers()) {
                         if (player2 != cmdsender) player2.teleport(location);
                     }
-                    sender.sendMessage("§e§lYou teleported all players to you!");
+                    sender.sendMessage(plugin.getMessage("tpallCommandTeleportedAll"));
 
                 }
             }
         } else {
-            sender.sendMessage("&4&You must be a player to execute this command.!".replace('&', '§'));
+            sender.sendMessage(plugin.getMessage("notAPlayer"));
         }
         return true;
     }

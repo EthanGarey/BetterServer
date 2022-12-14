@@ -21,44 +21,31 @@ public class Gamemode implements CommandExecutor, TabCompleter{
     public Gamemode(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("gamemode")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("gamemode")).setDescription(plugin.getMessage("gamemodeCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("gamemode")).setUsage(plugin.getMessage("gamemodeCommandUsage"));
         Objects.requireNonNull(this.plugin.getCommand("gmc")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("gmc")).setDescription(plugin.getMessage("gmcCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("gmc")).setUsage(plugin.getMessage("gmcCommandUsage"));
         Objects.requireNonNull(this.plugin.getCommand("gma")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("gma")).setDescription(plugin.getMessage("gmaCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("gma")).setUsage(plugin.getMessage("gmaCommandUsage"));
         Objects.requireNonNull(this.plugin.getCommand("gms")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("gms")).setDescription(plugin.getMessage("gmsCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("gms")).setUsage(plugin.getMessage("gmsCommandUsage"));
         Objects.requireNonNull(this.plugin.getCommand("gmsp")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("gmsp")).setDescription(plugin.getMessage("gmspCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("gmsp")).setUsage(plugin.getMessage("gmspCommandUsage"));
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gmc")) {
-            if (label.equals("gmc")) {
-                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                return true;
-            }
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
+            return true;
+
         }
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gms")) {
-            if (label.equals("gms")) {
-                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                return true;
-            }
-        }
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gma")) {
-            if (label.equals("gma")) {
-                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                return true;
-            }
-        }
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gmsp")) {
-            if (label.equals("gmsp")) {
-                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                return true;
-            }
-        }
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("gamemode")) {
-            if (label.equals("gamemode")) {
-                sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
-                return true;
-            }
-        }
+
         //Done :D
         switch (label) {
             case "gmc", "gma", "gmsp", "gms" -> {
@@ -67,7 +54,7 @@ public class Gamemode implements CommandExecutor, TabCompleter{
                     if (sender instanceof Player player) {
                         target = player;
                     } else {
-                        sender.sendMessage("§4§lPlease enter a user to set the gamemode to.");
+                        sender.sendMessage(plugin.getMessage("gamemodeCommandEnterUser"));
                         return true;
                     }
                 } else {
@@ -75,7 +62,8 @@ public class Gamemode implements CommandExecutor, TabCompleter{
                 }
                 String gamemode = "";
                 if (target == null) {
-                    sender.sendMessage("§4§lCan't find player by the name of " + args[0]);
+                    sender.sendMessage(plugin.getMessage("cannotFindPlayer").replace("{0}", args[0]));
+
                     return true;
                 }
                 switch (label) {
@@ -97,15 +85,14 @@ public class Gamemode implements CommandExecutor, TabCompleter{
                     }
                 }
                 if (! (target == sender)) {
-                    sender.sendMessage("§e§lYou set " + target.getName() + "§e§l's gamemode to §a§l" + gamemode);
+                    sender.sendMessage(plugin.getMessage("gamemodeCommandSetGamemodeTarget").replace("{0}", target.getName()).replace("{1}", gamemode));
                 }
-                target.sendMessage("§e§lYour gamemode has been set to §a§l" + gamemode);
+                target.sendMessage(plugin.getMessage("gamemodeCommandSetGamemodeUser").replace("{0}", gamemode));
                 return true;
             }
         }
         if (args.length == 0) {
-            sender.sendMessage("§4§lUsage: /gamemode <creative,survival,spectator,adventure> " + (sender instanceof Player ? "[player]" : "<player>"));
-            return true;
+            return false;
         }
         String usage = args[0];
         Player target;
@@ -114,13 +101,14 @@ public class Gamemode implements CommandExecutor, TabCompleter{
             if (sender instanceof Player player) {
                 target = player;
             } else {
-                sender.sendMessage("§4§lA player must execute this command!");
+                sender.sendMessage(plugin.getMessage("notAPlayer"));
                 return true;
             }
         } else {
             target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                sender.sendMessage("§4§lCan't find player by the name of " + args[1]);
+                sender.sendMessage(plugin.getMessage("cannotFindPlayer").replace("{0}", args[0]));
+
                 return true;
             }
         }
@@ -147,7 +135,7 @@ public class Gamemode implements CommandExecutor, TabCompleter{
                         gamemode = "CREATIVE";
                     }
                     default -> {
-                        sender.sendMessage("§4§lCannot find the gamemode " + usage);
+                        sender.sendMessage(plugin.getMessage("gamemodeCommandCannotFindGamemode").replace("{0}", usage));
                         return true;
                     }
                 }
@@ -155,10 +143,10 @@ public class Gamemode implements CommandExecutor, TabCompleter{
         }
         if (! (args.length == 1)) {
             if (! (target == sender)) {
-                sender.sendMessage("§e§lYou set " + target.getName() + "§e§l's gamemode to §a§l" + gamemode);
+                sender.sendMessage(plugin.getMessage("gamemodeCommandSetGamemodeTarget").replace("{0}", target.getName()).replace("{1}", gamemode));
             }
         }
-        target.sendMessage("§e§lYour gamemode has been set to §a§l" + gamemode);
+        target.sendMessage(plugin.getMessage("gamemodeCommandSetGamemodeUser").replace("{0}", gamemode));
         return true;
 
     }

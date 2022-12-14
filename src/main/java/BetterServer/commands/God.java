@@ -24,14 +24,16 @@ public class God implements CommandExecutor, Listener, TabCompleter{
 
         Objects.requireNonNull(this.plugin.getCommand("god")).setExecutor(this);
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
-
+        Objects.requireNonNull(this.plugin.getCommand("god")).setDescription(plugin.getMessage("godCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("god")).setUsage(plugin.getMessage("godCommandUsage"));
     }
 
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("god")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
         }
         //Done :D
@@ -41,10 +43,11 @@ public class God implements CommandExecutor, Listener, TabCompleter{
             if (args.length == 0) {
                 if (! Main.godmode.contains(p)) {
                     Main.godmode.add(p);
-                    p.sendMessage("§a§lYou are now invincible!");
+                    sender.sendMessage(plugin.getMessage("godCommandNowInvincible"));
                 } else {
                     Main.godmode.remove(p);
-                    p.sendMessage("§a§lYou are no longer invincible!");
+                    sender.sendMessage(plugin.getMessage("godCommandNoLongerInvincible"));
+
                 }
             } else if (args.length == 1) {
                 Player t = Bukkit.getPlayerExact(args[0]);
@@ -52,44 +55,32 @@ public class God implements CommandExecutor, Listener, TabCompleter{
                     if (t != p) {
                         if (! Main.godmode.contains(t)) {
                             Main.godmode.add(t);
-                            p.sendMessage("§a§l" + t.getName() + "§e§lis now invincible!");
-                            t.sendMessage("§a§lYou are now invincible!");
+                            sender.sendMessage(plugin.getMessage("godCommandOtherIsNowInvincible"));
+                            t.sendMessage(plugin.getMessage("godCommandNowInvincible"));
                         } else {
                             Main.godmode.remove(t);
-                            p.sendMessage("§a§l" + t.getName() + "§e§lis no longer invincible");
-                            t.sendMessage("§a§lYou are no longer invincible!");
+                            sender.sendMessage(plugin.getMessage("godCommandOtherIsNoLongerInvincible"));
+                            t.sendMessage(plugin.getMessage("godCommandNoLongerInvincible"));
                         }
                     } else if (! Main.godmode.contains(p)) {
                         Main.godmode.add(p);
-                        p.sendMessage("§a§lYou are now invincible!");
+                        p.sendMessage(plugin.getMessage("godCommandNowInvincible"));
                     } else {
                         Main.godmode.remove(p);
-                        p.sendMessage("§a§lYou are no longer invincible!");
+                        p.sendMessage(plugin.getMessage("godCommandNoLongerInvincible"));
                     }
                 } else {
-                    p.sendMessage("§4§lCould not find player §3§l" + args[0] + "&4&l!");
+                    sender.sendMessage(plugin.getMessage("cannotFindPlayer").replace("{0}", args[0]));
+                    return true;
+
                 }
             } else {
-                p.sendMessage("§4§lUsage: /god [<player>]");
-            }
+                return false;
 
-        } else if (args.length == 1) {
-            p = Bukkit.getPlayerExact(args[0]);
-            if (p != null) {
-                if (! Main.godmode.contains(p)) {
-                    Main.godmode.add(p);
-                    sender.sendMessage("§a§l" + p.getName() + "§e§lis now invincible");
-                    p.sendMessage("§a§lYou are now invincibly!");
-                } else {
-                    Main.godmode.remove(p);
-                    sender.sendMessage("§a§l" + p.getName() + "§e§lis no longer invincible");
-                    p.sendMessage("§a§lYou are no longer invincibly!");
-                }
             }
         } else {
-            sender.sendMessage("§4§lUsage: /god [<player>]");
+            sender.sendMessage(plugin.getMessage("notAPlayer"));
         }
-
         return true;
     }
 

@@ -9,25 +9,27 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Properties;
 
 public class Main extends JavaPlugin{
     public static ArrayList<Player> godmode = new ArrayList<>();
     public static HashMap<Player, Location> backlistlocation = new HashMap<>();
     public Msg msg;
-    public SocialSpy socialSpy;
-
 
     public void updateversion( ) {
+
         File config = new File(getDataFolder(), "config.yml");
         if (! (config.exists())) {
             Bukkit.getConsoleSender().sendMessage("Config file not found, Creating one for you!");
 
         }
+
         saveDefaultConfig();
+
         getConfig().set("version", Objects.requireNonNull(getConfig().getDefaults()).get("version"));
 
         saveConfig();
@@ -44,11 +46,13 @@ public class Main extends JavaPlugin{
     @Override
     public void onEnable( ) {
         // Plugin startup logic
+
         int pluginId = 16752;
         new MetricsLite(this, pluginId);
         updateversion();
+        LanguageUtil();
         this.msg = new Msg(this);
-        this.socialSpy = new SocialSpy(this);
+        
         new Motd(this);
         new Homes(this);
         new Rules(this);
@@ -67,7 +71,6 @@ public class Main extends JavaPlugin{
         new BetterServerHelper(this);
         new Gamemode(this);
         new Fly(this);
-        new Reply(this);
         new Teleport(this);
         new Speed(this);
         Bukkit.getConsoleSender().sendMessage("&d[BetterServer] is running".replace('&', '§'));
@@ -76,10 +79,92 @@ public class Main extends JavaPlugin{
 
     }
 
-
     public void onDisable( ) {
         // Plugin shutdown logic
     }
 
-    /*The End of file*/
+    public void LanguageUtil( ) {
+
+        switch (this.getConfig().getString("Language")) {
+            case "en" -> {
+                Bukkit.getConsoleSender().sendMessage("§e§lThe plugin language is set to §a§lEnglish§e§l.");
+                saveResource("messages.properties", false);
+
+            }
+            case "es" -> {
+                Bukkit.getConsoleSender().sendMessage("§e§lEl idioma del plugin esta configurado en §a§lEspanol§e§l.");
+                saveResource("messages_es.properties", false);
+
+            }
+            default -> {
+                Bukkit.getConsoleSender().sendMessage("§4§lAn error occurred, the config.yml did not have a language set.");
+                Bukkit.getConsoleSender().sendMessage("§4§lIt will be defaulted as english.");
+
+            }
+        }
+
+    }
+
+    public String getMessage(String e) {
+        switch (this.getConfig().getString("Language")) {
+            case "en" -> {
+                InputStreamReader langfile;
+                try {
+                    langfile = new FileReader(getDataFolder() + "\\messages.properties");
+                } catch (FileNotFoundException v) {
+                    saveResource("messages.properties", true);
+                    return "&c4&lAn error occurred! Please try that command again later!";
+                }
+                Properties lang = new Properties();
+                try {
+                    lang.load(langfile);
+                } catch (IOException ignored) {
+                }
+                String translate = lang.get(e) + "";
+                if (translate.equals("null")) {
+                    InputStream langfilenull;
+                    langfilenull = getResource("messages.properties");
+                    Properties langnull = new Properties();
+                    try {
+                        langnull.load(langfilenull);
+                    } catch (IOException ignored) {
+                    }
+                    translate = langnull.getProperty(e);
+                }
+                return translate.replace('&', '§');
+            }
+
+            case "es" -> {
+                InputStreamReader langfile;
+                try {
+                    langfile = new FileReader(getDataFolder() + "\\messages_es.properties");
+                } catch (FileNotFoundException v) {
+                    saveResource("messages_es.properties", true);
+                    return "&4&lAn error occurred! Please try that command again later!";
+                }
+                Properties lang = new Properties();
+                try {
+                    lang.load(langfile);
+                } catch (IOException ignored) {
+                }
+                String translate = lang.get(e) + "";
+                if (translate.equals("null")) {
+                    InputStream langfilenull;
+                    langfilenull = getResource("messages_es.properties");
+                    Properties langnull = new Properties();
+                    try {
+                        langnull.load(langfilenull);
+                    } catch (IOException ignored) {
+                    }
+                    translate = langnull.getProperty(e);
+                }
+                return translate.replace('&', '§');
+            }
+            default -> {
+                return null;
+            }
+        }
+
+    }
 }
+

@@ -19,20 +19,23 @@ public class Trash implements CommandExecutor, TabCompleter{
     public Trash(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("trash")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("trash")).setDescription(plugin.getMessage("trashCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("trash")).setUsage(plugin.getMessage("trashCommandUsage"));
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("trash")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
         }
         if (sender instanceof Player player) {
-            player.sendMessage("§a§lOpening trash bin.");
+            sender.sendMessage(plugin.getMessage("trashCommandOpen"));
             Inventory inventory = Bukkit.createInventory(player, 27, "§4§lTrash Bin");
             player.openInventory(inventory);
         } else {
-            sender.sendMessage("§4§lOnly players can execute this command!");
+            sender.sendMessage(plugin.getMessage("notAPlayer"));
         }
         //Done :D
         return true;

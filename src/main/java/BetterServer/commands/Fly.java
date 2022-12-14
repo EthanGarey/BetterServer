@@ -18,46 +18,47 @@ public class Fly implements CommandExecutor, TabCompleter{
     public Fly(final Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("fly")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("fly")).setDescription(plugin.getMessage("flyCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("fly")).setUsage(plugin.getMessage("flyCommandUsage"));
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("fly")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
         }
         //Done :D
-        if (sender instanceof final Player player) {
+        if (sender instanceof Player player) {
 
             if (args.length == 0) {
                 if (! player.getAllowFlight()) {
                     player.setAllowFlight(true);
-                    player.sendMessage("§e§lFlight is now §a§lEnabled.");
+                    sender.sendMessage(plugin.getMessage("flightEnabledForPlayer"));
                 } else {
                     player.setAllowFlight(false);
-                    player.sendMessage("§e§lFlight is now §4§lDisabled.");
+                    sender.sendMessage(plugin.getMessage("flightDisabledForPlayer"));
                 }
             }
             if (args.length >= 1) {
-                if (player.hasPermission("permissions.commands.flight.toggleothers")) {
-                    final Player other = Bukkit.getPlayer(args[0]);
-                    if (other != null) {
-                        if (! other.getAllowFlight()) {
-                            other.setAllowFlight(true);
-                            player.sendMessage("§e§lFlight is now §a§lEnabled §e§lFor §3§l{NICK}§e§l.".replace("{NICK}", other.getName()));
-                        } else {
-                            other.setAllowFlight(false);
-                            player.sendMessage("§e§lFlight is now §4§lDisabled §e§lFor §3§l{NICK}§e§l.".replace("{NICK}", other.getName()));
-                        }
+                Player other = Bukkit.getPlayer(args[0]);
+                if (other != null) {
+                    if (! other.getAllowFlight()) {
+                        other.setAllowFlight(true);
+                        sender.sendMessage(plugin.getMessage("flightEnabledForTarget").replace("{0}", other.getName()));
                     } else {
-                        player.sendMessage("§4§lCloud not find player §3§l{NICK}§4§l!".replace("{NICK}", (args[0])));
+                        other.setAllowFlight(false);
+                        sender.sendMessage(plugin.getMessage("flightDisabledForTarget").replace("{0}", other.getName()));
                     }
                 } else {
-                    player.sendMessage("§4§lYou do not have access to that command!");
+                    sender.sendMessage(plugin.getMessage("cannotFindPlayer").replace("{0}", args[0]));
+
                 }
+
             }
         } else {
-            sender.sendMessage("§4§lOnly players can execute this command!");
+            sender.sendMessage(plugin.getMessage("notAPlayer"));
         }
         return true;
     }

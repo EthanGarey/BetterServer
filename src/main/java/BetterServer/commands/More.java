@@ -22,13 +22,15 @@ public class More implements CommandExecutor, TabCompleter{
 
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("more")).setExecutor(this);
-
+        Objects.requireNonNull(this.plugin.getCommand("more")).setDescription(plugin.getMessage("moreCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("more")).setUsage(plugin.getMessage("moreCommandUsage"));
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("more")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
         }
         if (sender instanceof Player player) {
@@ -37,15 +39,15 @@ public class More implements CommandExecutor, TabCompleter{
                 int max = plugin.getConfig().getInt("MoreCommandMaxStack");
                 if (max < 128) {
                     iteminhand.setAmount(max);
-                    sender.sendMessage("§e§lThe item in your hand has been set to a stack of " + max + "!");
+                    sender.sendMessage(plugin.getMessage("moreCommandItemSuccess").replace("{0}", max + ""));
                 } else {
-                    sender.sendMessage("§4§lError, max amount of items allowed is 127, please fix your configuration!");
+                    sender.sendMessage(plugin.getMessage("moreCommandItemErrorMaxItem"));
                 }
             } else {
-                sender.sendMessage("§4§lError, cannot set air to a stack set in the configuration.");
+                sender.sendMessage(plugin.getMessage("moreCommandItemErrorAir"));
             }
         } else {
-            sender.sendMessage("§4§lYou must be a player to execute this command!");
+            sender.sendMessage(plugin.getMessage("notAPlayer"));
         }
         return true;
     }

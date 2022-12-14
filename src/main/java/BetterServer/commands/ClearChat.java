@@ -19,28 +19,32 @@ public class ClearChat implements CommandExecutor, TabCompleter{
     public ClearChat(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("clearchat")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("clearchat")).setDescription(plugin.getMessage("clearChatCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("clearchat")).setUsage(plugin.getMessage("clearChatCommandUsage"));
+
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("clearchat")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
         }
         //Done :D
-        String message = "§e§lChat cleared by " + (sender instanceof Player player ? player.getName() : "Console");
         Bukkit.getOnlinePlayers().forEach(p -> {
             if (! (p.hasPermission("permission.Clearchat.exempt"))) {
-                p.sendMessage("If you see this message, report this as error code 0.");
                 IntStream.range(0, 100).forEach(i -> p.sendMessage(""));
-                p.sendMessage(message);
+                p.sendMessage(plugin.getMessage("clearChatCommandMessageForNonPermission").replace("{0}", sender.getName()));
             } else {
-                p.sendMessage("");
-                p.sendMessage(message + " §e§l(You did not get your chat cleared as you have permissions)");
-                p.sendMessage("");
+                p.sendMessage(plugin.getMessage("clearChatCommandMessageForPermission").replace("{0}", sender.getName()));
+
             }
         });
-        Bukkit.getConsoleSender().sendMessage(message);
+        if (sender instanceof Player) {
+            Bukkit.getConsoleSender().sendMessage(plugin.getMessage("clearChatCommandMessageToSendToConsole").replace("{0}", sender.getName()));
+        } else {
+            Bukkit.getConsoleSender().sendMessage(plugin.getMessage("clearChatCommandMessageToSendToConsole").replace("{0}", sender.getName()));
+        }
         return true;
     }
 

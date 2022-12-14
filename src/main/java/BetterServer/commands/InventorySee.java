@@ -22,12 +22,15 @@ public class InventorySee implements CommandExecutor, TabCompleter{
 
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("invsee")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("invsee")).setDescription(plugin.getMessage("inventorySeeCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("invsee")).setUsage(plugin.getMessage("inventorySeeCommandUsage"));
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("invsee")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
         }
         //Done :D
@@ -35,27 +38,26 @@ public class InventorySee implements CommandExecutor, TabCompleter{
             if (! (args.length == 0)) {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target == null) {
-                    sender.sendMessage("§4§lCannot find player " + args[0]);
+                    sender.sendMessage(plugin.getMessage("cannotFindPlayer"));
                     return true;
                 }
                 if (target == player) {
-                    sender.sendMessage("§4§lPlease enter a player that is not you to run this command");
+                    sender.sendMessage(plugin.getMessage("targetCannotBeYou"));
                     return true;
                 }
                 if (target.getGameMode() == GameMode.CREATIVE) {
-                    sender.sendMessage("§4§lViewing inventory's of users in creative mode might be buggy. Beware.");
+                    sender.sendMessage(plugin.getMessage("inventorySeeCommandBuggyWarning"));
                     player.openInventory(target.getInventory());
                     return true;
                 }
-                sender.sendMessage("§e§lYou opened " + target.getName() + "'s inventory.");
-                player.openInventory(target.getInventory());
+                sender.sendMessage(plugin.getMessage("inventorySeeYouOpenedTargetsInventory").replace("{0}", target.getName()));
             } else {
-                sender.sendMessage("§4§lPlease enter a player to open a inventory.");
+                return false;
             }
             return true;
 
         }
-        sender.sendMessage("§4§lOnly players can execute this command.");
+        sender.sendMessage(plugin.getMessage("notAPlayer"));
         return true;
     }
 

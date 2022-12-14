@@ -16,32 +16,34 @@ import java.util.List;
 import java.util.Objects;
 
 public class Back implements CommandExecutor, Listener, TabCompleter{
-    final Main plugin;
+
+    Main plugin;
 
     public Back(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("back")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("back")).setDescription(plugin.getMessage("backCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("back")).setUsage(plugin.getMessage("backCommandUsage"));
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
 
     }
 
-
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("back")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
         }
         //Done :D
         if (sender instanceof Player player) {
             if (Main.backlistlocation.containsKey(player)) {
                 player.teleport(Main.backlistlocation.get(player));
-                player.sendMessage("§a§lYou were teleported to your last death location!");
+                sender.sendMessage(plugin.getMessage("backCommandLastTeleportMessage"));
             } else {
-                player.sendMessage("§4§lCould not find your last death location!");
+                sender.sendMessage(plugin.getMessage("backCommandCouldNotFindTPMessage"));
             }
         } else {
-            sender.sendMessage("§4§lYou must be a player to execute this command.");
+            sender.sendMessage(plugin.getMessage("notAPlayer"));
         }
 
         return true;
@@ -64,7 +66,6 @@ public class Back implements CommandExecutor, Listener, TabCompleter{
         }
     }
 
-
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length >= 2) {
@@ -72,4 +73,6 @@ public class Back implements CommandExecutor, Listener, TabCompleter{
         }
         return null;
     }
+
+
 }

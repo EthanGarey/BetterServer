@@ -2,10 +2,7 @@ package BetterServer.commands;
 
 import BetterServer.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,37 +19,37 @@ public class Mutechat implements CommandExecutor, Listener, TabCompleter{
     public Mutechat(Main plugin) {
         this.plugin = plugin;
         Objects.requireNonNull(this.plugin.getCommand("mutechat")).setExecutor(this);
+        Objects.requireNonNull(this.plugin.getCommand("mutechat")).setDescription(plugin.getMessage("mutechatCommandDescription"));
+        Objects.requireNonNull(this.plugin.getCommand("mutechat")).setUsage(plugin.getMessage("mutechatCommandUsage"));
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //Check if command is enabled:
-        if (this.plugin.getConfig().getStringList("DisabledCommands").contains("mutechat")) {
-            sender.sendMessage("§4§lThis command is currently disabled, if you wish to override this command you are free to do.");
+        if (this.plugin.getConfig().getStringList("DisabledCommands").contains(label)) {
+
+            sender.sendMessage(plugin.getMessage("commandDisabled"));
             return true;
         }
         //Done :D
-        if (chatmuted) {
-            chatmuted = false;
-            Bukkit.getConsoleSender().sendMessage("Chat unmuted by " + (sender instanceof Player player ? player.getName() : "Console"));
-        } else {
-            chatmuted = true;
-            Bukkit.getConsoleSender().sendMessage("Chat muted by " + (sender instanceof Player player ? player.getName() : "Console"));
-
-
+        chatmuted = ! chatmuted;
+        if (sender instanceof ConsoleCommandSender) {
+            if (chatmuted) {
+                sender.sendMessage(plugin.getMessage("mutechatCommandInstanceOfConsoleMutedChat"));
+            } else {
+                sender.sendMessage(plugin.getMessage("mutechatCommandInstanceOfConsoleUnmutedChat"));
+            }
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
 
             if (chatmuted) {
-                if (p.hasPermission("permissions.mutechat.bypass")) {
-                    p.sendMessage("§4§lChat has been muted by " + (sender instanceof Player player ? player.getName() : "Console") + (" (You can still chat as you have permission)"));
-
+                if (p.hasPermission("permissions.chatmuted.bypass")) {
+                    p.sendMessage(plugin.getMessage("mutechatCommandChatMutedHasPermission").replace("{0}", sender.getName()));
                 } else {
-                    p.sendMessage("§4§lChat has been muted by " + (sender instanceof Player player ? player.getName() : "Console"));
+                    p.sendMessage(plugin.getMessage("mutechatCommandChatMuted").replace("{0}", sender.getName()));
                 }
             } else {
-                p.sendMessage("§e§lChat has been unmuted by " + (sender instanceof Player player ? player.getName() : "Console"));
-
+                p.sendMessage(plugin.getMessage("mutechatCommandChatUnmuted").replace("{0}", sender.getName()));
             }
         }
         return true;
